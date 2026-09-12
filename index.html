@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="BitForge educational digital currency dashboard">
+    <title>BitForge | Dashboard</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Header and simple page navigation -->
+    <header class="site-header">
+        <a class="brand" href="#dashboard" aria-label="BitForge dashboard">
+            <span class="brand-mark">BF</span>
+            <span>
+                <strong>BITFORGE</strong>
+                <small>Decentralized Digital Currency</small>
+            </span>
+        </a>
+
+        <button class="menu-button" id="menu-button" type="button" aria-label="Open navigation" aria-expanded="false">☰</button>
+
+        <nav class="main-nav" id="main-nav" aria-label="Main navigation">
+            <a href="#dashboard">Dashboard</a>
+            <a href="#wallet">Wallet</a>
+            <a href="#transactions">Transactions</a>
+            <a href="#blockchain">Blockchain</a>
+            <a href="#mining">Mining</a>
+            <a href="#network">Network</a>
+        </nav>
+
+        <div class="user-area">
+            <span class="user-name">User: Bhanu</span>
+            <button class="text-button" type="button" data-message="Logout will be connected when user accounts are added.">Logout</button>
+        </div>
+    </header>
+
+    <main id="dashboard">
+        <section class="hero" aria-labelledby="page-title">
+            <div>
+                <p class="eyebrow">EDUCATIONAL BLOCKCHAIN SIMULATION</p>
+                <h1 id="page-title">Your BitForge dashboard</h1>
+                <p>Explore wallets, transactions, mining, and the shared blockchain network in one simple place.</p>
+            </div>
+            <p class="demo-note">Demo UI — no real coins or transactions</p>
+        </section>
+
+        <!-- Placeholder wallet data: replace with PHP/database data later. -->
+        <section class="wallet card" id="wallet" aria-labelledby="wallet-title">
+            <div class="section-heading">
+                <div>
+                    <p class="eyebrow">PERSONAL WALLET</p>
+                    <h2 id="wallet-title">My Wallet</h2>
+                </div>
+                <span class="status-badge">● Active</span>
+            </div>
+            <div class="wallet-details">
+                <div>
+                    <p class="label">Wallet Address</p>
+                    <p class="wallet-address" id="wallet-address">BF8A72F91C4D…</p>
+                </div>
+                <div class="balance-box">
+                    <p class="label">Available Balance</p>
+                    <p class="balance" id="balance">100 <span>BF</span></p>
+                </div>
+            </div>
+        </section>
+
+        <!-- These actions only move to UI sections or display an informational message. -->
+        <section class="quick-actions" aria-label="Quick actions">
+            <a class="action-card" href="#send"><span>↗</span><strong>Send BF</strong><small>Create a transfer</small></a>
+            <button class="action-card" type="button" data-message="Your receiving address is BF8A72F91C4D… (placeholder data)."><span>↓</span><strong>Receive BF</strong><small>Show your address</small></button>
+            <a class="action-card" href="#mining"><span>⛏</span><strong>Mine Block</strong><small>Open mining preview</small></a>
+            <a class="action-card" href="#blockchain"><span>▣</span><strong>View Blockchain</strong><small>See block preview</small></a>
+        </section>
+
+        <div class="content-grid">
+            <!-- Send form UI only: future versions will submit to a transaction API. -->
+            <section class="card" id="send" aria-labelledby="send-title">
+                <div class="section-heading">
+                    <div>
+                        <p class="eyebrow">NEW TRANSFER</p>
+                        <h2 id="send-title">Send BitForge</h2>
+                    </div>
+                </div>
+                <form id="send-form">
+                    <label for="recipient">Recipient Wallet</label>
+                    <input id="recipient" name="recipient" type="text" placeholder="Example: BF7C21A8..." required>
+
+                    <label for="amount">Amount</label>
+                    <div class="amount-input">
+                        <input id="amount" name="amount" type="number" min="0.01" step="0.01" placeholder="0.00" required>
+                        <span>BF</span>
+                    </div>
+
+                    <button class="primary-button" type="submit">Send BitForge <span>→</span></button>
+                    <p class="form-help">This demo form does not create a transaction.</p>
+                </form>
+            </section>
+
+            <!-- Mining values are placeholders until a real mining API is added. -->
+            <section class="mining card" id="mining" aria-labelledby="mining-title">
+                <div class="section-heading">
+                    <div>
+                        <p class="eyebrow">PROOF-OF-WORK PREVIEW</p>
+                        <h2 id="mining-title">Mining</h2>
+                    </div>
+                    <span class="mining-icon">⛏</span>
+                </div>
+                <div class="mining-stats">
+                    <p><span>Pending Transactions</span><strong id="pending-count">3</strong></p>
+                    <p><span>Mining Reward</span><strong>10 BF</strong></p>
+                    <p><span>Difficulty</span><strong>4</strong></p>
+                </div>
+                <button class="primary-button" type="button" data-message="Mining will be connected to Proof-of-Work in a future version.">Start Mining <span>→</span></button>
+                <p class="form-help">Preview only — no block will be mined.</p>
+            </section>
+        </div>
+
+        <!-- Placeholder transaction records: replace with database records later. -->
+        <section class="card" id="transactions" aria-labelledby="transactions-title">
+            <div class="section-heading">
+                <div>
+                    <p class="eyebrow">ACTIVITY</p>
+                    <h2 id="transactions-title">Recent Transactions</h2>
+                </div>
+                <span class="placeholder-label">Placeholder records</span>
+            </div>
+            <div class="table-wrap">
+                <table>
+                    <thead>
+                        <tr><th>Type</th><th>User</th><th>Amount</th><th>Status</th></tr>
+                    </thead>
+                    <tbody id="transactions-table">
+                        <tr><td><span class="type sent">↗ Sent</span></td><td>Rahul</td><td>20 BF</td><td><span class="confirmed">Confirmed</span></td></tr>
+                        <tr><td><span class="type received">↓ Received</span></td><td>Anil</td><td>10 BF</td><td><span class="confirmed">Confirmed</span></td></tr>
+                        <tr><td><span class="type sent">↗ Sent</span></td><td>Rahul</td><td>5 BF</td><td><span class="pending">Pending</span></td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <div class="bottom-grid">
+            <!-- Blocks are visual placeholders. Actual hashes and transactions will load later. -->
+            <section class="card" id="blockchain" aria-labelledby="blockchain-title">
+                <div class="section-heading">
+                    <div>
+                        <p class="eyebrow">SHARED LEDGER</p>
+                        <h2 id="blockchain-title">Blockchain Preview</h2>
+                    </div>
+                    <span class="placeholder-label">UI only</span>
+                </div>
+                <div class="chain" aria-label="Example chain of four blocks">
+                    <div class="block genesis"><strong>Block #0</strong><span>Genesis</span></div>
+                    <span class="chain-arrow">↓</span>
+                    <div class="block"><strong>Block #1</strong><span>3 Transactions</span></div>
+                    <span class="chain-arrow">↓</span>
+                    <div class="block"><strong>Block #2</strong><span>2 Transactions</span></div>
+                    <span class="chain-arrow">↓</span>
+                    <div class="block"><strong>Block #3</strong><span>4 Transactions</span></div>
+                </div>
+            </section>
+
+            <!-- Network status is a display placeholder; it does not connect to nodes yet. -->
+            <section class="card" id="network" aria-labelledby="network-title">
+                <div class="section-heading">
+                    <div>
+                        <p class="eyebrow">SIMULATED PEERS</p>
+                        <h2 id="network-title">BitForge Network</h2>
+                    </div>
+                </div>
+                <ul class="node-list">
+                    <li><span class="online-dot"></span><strong>Node A</strong><small>Online</small></li>
+                    <li><span class="online-dot"></span><strong>Node B</strong><small>Online</small></li>
+                    <li><span class="online-dot"></span><strong>Node C</strong><small>Online</small></li>
+                </ul>
+                <p class="form-help">Node communication will be added later.</p>
+            </section>
+        </div>
+
+        <!-- Validation is deliberately presented as a placeholder, not a real result. -->
+        <section class="validation card" aria-labelledby="validation-title">
+            <div>
+                <p class="eyebrow">INTEGRITY CHECK</p>
+                <h2 id="validation-title">Blockchain Status</h2>
+                <p class="valid-status">✓ Blockchain Valid <span>— placeholder display</span></p>
+            </div>
+            <button class="secondary-button" type="button" data-message="Blockchain verification will be added after the blockchain logic exists.">Verify Blockchain</button>
+        </section>
+    </main>
+
+    <div class="message" id="message" role="status" aria-live="polite"></div>
+
+    <footer>BitForge is an educational blockchain simulation. No real currency is used.</footer>
+    <script src="script.js"></script>
+</body>
+</html>

@@ -53,7 +53,7 @@ This is a demo interface and does not connect to a real blockchain, wallet backe
 ## Future Enhancements
 
 - connect to a real backend/API
-- add actual blockchain transaction logic
+- add actual git ad
 - implement wallet authentication and persistence
 - add mining simulation and block validation logic
 - expand into a full cryptocurrency management dashboard

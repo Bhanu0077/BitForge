@@ -1,82 +1,118 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>BitForge | Dashboard</title>
-    <link rel="stylesheet" href="../style.css">
-</head>
-<body>
-<header class="site-header">
-    <a class="brand" href="index.html"><span class="brand-mark">BF</span><span><strong>BITFORGE</strong><small>Blockchain Simulation</small></span></a>
-    <button class="menu-button" id="menu-button">☰</button>
-    <nav class="main-nav" id="main-nav">
-        <a href="index.html">Dashboard</a>
-        <a href="wallet.html">Wallet</a>
-        <a href="transactions.html">Transactions</a>
-        <a href="blockchain.html">Blockchain</a>
-        <a href="mining.html">Mining</a>
-        <a href="network.html">Network</a>
-    </nav>
-    <div class="user-area"><span id="welcome-user">User</span><a class="logout" href="login.html" onclick="logoutUser()">Logout</a></div>
-</header>
-
-<main>
-    <section class="hero">
-        <div>
-            <p class="eyebrow">EDUCATIONAL BLOCKCHAIN PROJECT</p>
-            <h1>Welcome to BitForge</h1>
-            <p>A simple frontend demonstration of wallets, transactions, mining and blockchain concepts.</p>
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Dashboard • BitForge</title>
+    <link rel="stylesheet" href="../style.css" />
+  </head>
+  <body>
+    <header>
+      <div class="container nav">
+        <a class="brand" href="index.html">Bit<span>Forge</span></a>
+        <nav>
+          <a class="active" href="index.html">Dashboard</a
+          ><a href="wallet.html">Wallet</a
+          ><a href="transactions.html">Transactions</a
+          ><a href="mining.html">Mining</a
+          ><a href="blockchain.html">Blockchain</a
+          ><a href="network.html">Network</a>
+        </nav>
+        <div class="nav-user">
+          <span class="avatar">B</span><span data-user>Bhanu</span>
         </div>
-        <span class="demo-note">Demo Project</span>
-    </section>
-
-    <section class="wallet card">
-        <div class="section-heading">
-            <div><p class="eyebrow">PERSONAL WALLET</p><h2>My Wallet</h2></div>
-            <span class="status-badge">● Active</span>
-        </div>
-        <div class="wallet-details">
-            <div><p class="label">Wallet Address</p><p class="wallet-address">BF8A72F91C4D...</p></div>
-            <div class="balance-box"><p class="label">Available Balance</p><p class="balance">100 <span>BF</span></p></div>
-        </div>
-    </section>
-
-    <section class="quick-actions">
-        <a class="action-card" href="wallet.html"><span>↗</span><strong>My Wallet</strong><small>View wallet details</small></a>
-        <a class="action-card" href="transactions.html"><span>↔</span><strong>Transactions</strong><small>View recent activity</small></a>
-        <a class="action-card" href="mining.html"><span>⛏</span><strong>Mine Block</strong><small>Mining preview</small></a>
-        <a class="action-card" href="blockchain.html"><span>▣</span><strong>Blockchain</strong><small>View blocks</small></a>
-    </section>
-
-    <div class="content-grid">
-        <section class="card">
-            <p class="eyebrow">QUICK TRANSFER</p>
-            <h2>Send BitForge</h2>
-            <form id="send-form">
-                <label for="recipient">Recipient Wallet</label>
-                <input id="recipient" type="text" placeholder="BF7C21A8..." required>
-                <label for="amount">Amount</label>
-                <input id="amount" type="number" min="1" placeholder="10" required>
-                <button class="primary-button" type="submit">Send BitForge →</button>
-            </form>
+      </div>
+    </header>
+    <main>
+      <div class="container">
+        <section class="hero">
+          <div>
+            <div class="eyebrow">Overview</div>
+            <h1>Good morning, <span data-user>Bhanu</span></h1>
+            <p>
+              Track your wallet, transactions and simulated blockchain network.
+            </p>
+          </div>
+          <a class="btn" href="wallet.html">+ New Transaction</a>
         </section>
-
-        <section class="card mining">
-            <p class="eyebrow">PROOF-OF-WORK</p>
-            <h2>Mining Preview</h2>
-            <div class="stats">
-                <p><span>Pending Transactions</span><strong>3</strong></p>
-                <p><span>Mining Reward</span><strong>10 BF</strong></p>
-                <p><span>Difficulty</span><strong>4</strong></p>
+        <div class="grid">
+          <div class="card kpi">
+            <div class="kpi-icon">◈</div>
+            <div class="label">Wallet Balance</div>
+            <div class="balance">
+              2,450 <span style="font-size: 14px">BFG</span>
             </div>
-            <a class="primary-button button-link" href="mining.html">Open Mining Page →</a>
-        </section>
-    </div>
-</main>
-
-<footer>BitForge — Educational blockchain simulation. No real currency is used.</footer>
-<div id="message" class="message"></div>
-<script src="../script.js"></script>
-</body>
+            <div class="small">Available demo balance</div>
+          </div>
+          <div class="card kpi">
+            <div class="kpi-icon">▦</div>
+            <div class="label">Blockchain Height</div>
+            <div class="balance">#<span data-blocks>1</span></div>
+            <div class="small">Blocks in blockchain</div>
+          </div>
+          <div class="card kpi">
+            <div class="kpi-icon">●</div>
+            <div class="label">Network Status</div>
+            <div class="balance good">Online</div>
+            <div class="small">4 connected nodes</div>
+          </div>
+        </div>
+        <div class="grid two" style="margin-top: 16px">
+          <div class="card">
+            <div class="card-title">
+              <h2>Network Activity</h2>
+              <span class="badge">Live</span>
+            </div>
+            <div class="small">Simulated block activity</div>
+            <div class="mini-chart">
+              <span class="bar"></span><span class="bar"></span
+              ><span class="bar"></span><span class="bar"></span
+              ><span class="bar"></span><span class="bar"></span
+              ><span class="bar"></span>
+            </div>
+          </div>
+          <div class="card">
+            <div class="card-title"><h2>Quick Actions</h2></div>
+            <div class="actions">
+              <a class="btn" href="wallet.html">Send BFG</a
+              ><a class="btn secondary" href="mining.html">Mine Block</a
+              ><a class="btn secondary" href="blockchain.html">Explore Chain</a>
+            </div>
+          </div>
+        </div>
+        <div class="grid two" style="margin-top: 16px">
+          <div class="card">
+            <div class="card-title"><h2>How BitForge works</h2></div>
+            <div class="timeline">
+              <div class="step">
+                <strong>1. Create transaction</strong>
+                <p>Choose a receiver and amount from your wallet.</p>
+              </div>
+              <div class="step">
+                <strong>2. Mine a block</strong>
+                <p>Package the transaction into a simulated block.</p>
+              </div>
+              <div class="step">
+                <strong>3. Validate the chain</strong>
+                <p>Inspect hashes and see how blocks link together.</p>
+              </div>
+            </div>
+          </div>
+          <div class="card">
+            <div class="card-title"><h2>System</h2></div>
+            <div class="stat">
+              <span>Consensus</span><strong>Proof of Work</strong>
+            </div>
+            <div class="stat"><span>Currency</span><strong>BFG</strong></div>
+            <div class="stat"><span>Backend</span><strong>None</strong></div>
+            <div class="stat">
+              <span>Purpose</span><strong>Education</strong>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+    <footer>BitForge • BitForge Blockchain</footer>
+    <script src="../script.js"></script>
+  </body>
 </html>

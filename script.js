@@ -1,80 +1,97 @@
-// Simple BitForge UI JavaScript.
-// This project uses localStorage only for a small demo login.
+const currentUser = localStorage.getItem("bitforgeUser") || "Bhanu";
 
-const menuButton = document.getElementById("menu-button");
-const navigation = document.getElementById("main-nav");
-const messageBox = document.getElementById("message");
+document.querySelectorAll("[data-user]").forEach(el => {
+  el.textContent = currentUser;
+});
 
-if (menuButton && navigation) {
-    menuButton.addEventListener("click", function () {
-        navigation.classList.toggle("open");
-    });
+function saveUser() {
+  const name = document.getElementById("name")?.value.trim();
+  if (!name) return;
+  localStorage.setItem("bitforgeUser", name);
+  location.href = "index.html";
+}
+
+function logout() {
+  localStorage.removeItem("bitforgeUser");
+  location.href = "login.html";
 }
 
 function showMessage(text) {
-    if (!messageBox) {
-        alert(text);
-        return;
-    }
-    messageBox.textContent = text;
-    messageBox.classList.add("show");
-    setTimeout(function () {
-        messageBox.classList.remove("show");
-    }, 2500);
+  const box = document.getElementById("message");
+  if (box) box.textContent = text;
 }
 
-const savedName = localStorage.getItem("bitforgeUser");
-document.querySelectorAll("#welcome-user").forEach(function (item) {
-    item.textContent = savedName ? "Hi, " + savedName : "Guest";
+function sendCoins(event) {
+  event.preventDefault();
+  const receiver = document.getElementById("receiver").value.trim();
+  const amount = Number(document.getElementById("amount").value);
+
+  if (!receiver || amount <= 0) {
+    showMessage("Please enter a valid receiver and amount.");
+    return;
+  }
+
+  const transactions = JSON.parse(localStorage.getItem("bitforgeTxs") || "[]");
+  transactions.unshift({
+    from: currentUser,
+    to: receiver,
+    amount: amount,
+    time: new Date().toLocaleString()
+  });
+  localStorage.setItem("bitforgeTxs", JSON.stringify(transactions));
+
+  showMessage("Transaction created. Go to Mining to add it to a block.");
+  event.target.reset();
+}
+
+function renderTransactions() {
+  const body = document.getElementById("txBody");
+  if (!body) return;
+
+  const txs = JSON.parse(localStorage.getItem("bitforgeTxs") || "[]");
+  if (!txs.length) {
+    body.innerHTML = '<tr><td colspan="4">No transactions yet.</td></tr>';
+    return;
+  }
+
+  body.innerHTML = txs.map(t =>
+    `<tr><td>${t.from}</td><td>${t.to}</td><td>${t.amount} BFG</td><td>${t.time}</td></tr>`
+  ).join("");
+}
+
+function addBlock() {
+  const blocks = Number(localStorage.getItem("bitforgeBlocks") || 1) + 1;
+  localStorage.setItem("bitforgeBlocks", blocks);
+  document.querySelectorAll("[data-blocks]").forEach(el => el.textContent = blocks);
+  showMessage("Block #" + blocks + " mined successfully — network only.");
+}
+
+function renderBlocks() {
+  const container = document.getElementById("blocks");
+  if (!container) return;
+
+  const count = Number(localStorage.getItem("bitforgeBlocks") || 1);
+  let html = "";
+
+  for (let i = count; i >= 1; i--) {
+    html += `
+      <div class="block">
+        <div class="block-head">
+          <strong>Block #${i}</strong>
+          <span class="badge">Valid</span>
+        </div>
+        <div class="small">Previous Hash</div>
+        <div class="hash">000000000000000000000000000000000000000000000000000000000000${i}</div>
+        <div class="stat"><span>Transactions</span><strong>${i === 1 ? 0 : 1}</strong></div>
+      </div>`;
+  }
+  container.innerHTML = html;
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+  renderTransactions();
+  renderBlocks();
+  document.querySelectorAll("[data-blocks]").forEach(el => {
+    el.textContent = localStorage.getItem("bitforgeBlocks") || "1";
+  });
 });
-
-const loginForm = document.getElementById("login-form");
-if (loginForm) {
-    loginForm.addEventListener("submit", function (event) {
-        event.preventDefault();
-        const email = document.getElementById("login-email").value;
-        const name = email.split("@")[0];
-        localStorage.setItem("bitforgeUser", name);
-        window.location.href = "index.html";
-    });
-}
-
-const signupForm = document.getElementById("signup-form");
-if (signupForm) {
-    signupForm.addEventListener("submit", function (event) {
-        event.preventDefault();
-        const name = document.getElementById("signup-name").value;
-        localStorage.setItem("bitforgeUser", name);
-        showMessage("Account created successfully!");
-        setTimeout(function () {
-            window.location.href = "index.html";
-        }, 800);
-    });
-}
-
-const sendForm = document.getElementById("send-form");
-if (sendForm) {
-    sendForm.addEventListener("submit", function (event) {
-        event.preventDefault();
-        showMessage("Transfer submitted! This is only a demo.");
-        sendForm.reset();
-    });
-}
-
-const mineButton = document.getElementById("mine-button");
-if (mineButton) {
-    mineButton.addEventListener("click", function () {
-        showMessage("Mining started... Demo only.");
-    });
-}
-
-const verifyButton = document.getElementById("verify-button");
-if (verifyButton) {
-    verifyButton.addEventListener("click", function () {
-        showMessage("Blockchain verified! Demo result.");
-    });
-}
-
-function logoutUser() {
-    localStorage.removeItem("bitforgeUser");
-}

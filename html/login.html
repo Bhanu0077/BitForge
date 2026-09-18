@@ -1,27 +1,39 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>BitForge | Login</title>
-    <link rel="stylesheet" href="../style.css">
-</head>
-<body class="auth-page">
-<div class="auth-card">
-    <a class="brand dark-brand" href="index.html"><span class="brand-mark">BF</span><span><strong>BITFORGE</strong><small>Blockchain Simulation</small></span></a>
-    <p class="eyebrow">WELCOME BACK</p>
-    <h1>Login</h1>
-    <p class="auth-text">Login to open your BitForge dashboard.</p>
-    <form id="login-form">
-        <label for="login-email">Email</label>
-        <input id="login-email" type="email" placeholder="student@example.com" required>
-        <label for="login-password">Password</label>
-        <input id="login-password" type="password" placeholder="Enter password" required>
-        <button class="primary-button" type="submit">Login</button>
-    </form>
-    <p class="switch-text">Don't have an account? <a href="signup.html">Sign up</a></p>
-    <a class="back-link" href="index.html">← Back to dashboard</a>
-</div>
-<script src="../script.js"></script>
-</body>
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Login • BitForge</title>
+    <link rel="stylesheet" href="../style.css" />
+  </head>
+  <body class="auth-page">
+    <main>
+      <div class="auth">
+        <div class="brand">Bit<span>Forge</span></div>
+        <div class="card">
+          <div class="eyebrow">Blockchain Lab</div>
+          <h1>Welcome back</h1>
+          <p class="auth-sub">Enter a username to open your BitForge wallet.</p>
+          <form
+            onsubmit="
+              event.preventDefault();
+              saveUser();
+            "
+          >
+            <label>Username</label
+            ><input id="name" placeholder="e.g. Bhanu" required /><button
+              class="btn"
+            >
+              Enter BitForge
+            </button>
+          </form>
+          <p class="auth-links">
+            No account? <a class="accent" href="signup.html">Create one</a>
+          </p>
+          <div class="notice">Sign in with your BitForge username.</div>
+        </div>
+      </div>
+    </main>
+    <script src="../script.js"></script>
+  </body>
 </html>

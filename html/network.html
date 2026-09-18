@@ -1,86 +1,97 @@
 <!doctype html>
-<html lang="en">
+<html>
   <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>BitForge | Network</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Network • BitForge</title>
     <link rel="stylesheet" href="../style.css" />
   </head>
   <body>
-    <header class="site-header">
-      <a class="brand" href="index.html"
-        ><span class="brand-mark">BF</span
-        ><span
-          ><strong>BITFORGE</strong><small>Blockchain Simulation</small></span
-        ></a
-      ><button class="menu-button" id="menu-button">☰</button>
-      <nav class="main-nav" id="main-nav">
-        <a href="index.html">Dashboard</a><a href="wallet.html">Wallet</a
-        ><a href="transactions.html">Transactions</a
-        ><a href="blockchain.html">Blockchain</a><a href="mining.html">Mining</a
-        ><a class="active" href="network.html">Network</a>
-      </nav>
-      <div class="user-area">
-        <span id="welcome-user">User</span
-        ><a class="logout" href="login.html" onclick="logoutUser()">Logout</a>
+    <header>
+      <div class="container nav">
+        <a class="brand" href="index.html">Bit<span>Forge</span></a>
+        <nav>
+          <a href="index.html">Dashboard</a><a href="wallet.html">Wallet</a
+          ><a href="transactions.html">Transactions</a
+          ><a href="mining.html">Mining</a
+          ><a href="blockchain.html">Blockchain</a
+          ><a class="active" href="network.html">Network</a>
+        </nav>
+        <div class="nav-user">
+          <span class="avatar">B</span><span data-user>Bhanu</span>
+        </div>
       </div>
     </header>
     <main>
-      <section class="hero">
-        <div>
-          <p class="eyebrow">SIMULATED PEERS</p>
-          <h1>BitForge Network</h1>
-          <p>
-            Example nodes showing how a blockchain network can be represented.
-          </p>
-        </div>
-      </section>
-      <div class="content-grid">
-        <section class="card">
-          <p class="eyebrow">CONNECTED NODES</p>
-          <h2>Network Nodes</h2>
-          <ul class="node-list">
-            <li>
-              <span class="online-dot"></span>
-              <strong>Rahul</strong>
-              <small>Online</small>
-            </li>
-
-            <li>
-              <span class="online-dot"></span>
-              <strong>Anil</strong>
-              <small>Online</small>
-            </li>
-
-            <li>
-              <span class="online-dot"></span>
-              <strong>Ram</strong>
-              <small>Online</small>
-            </li>
-
-            <li>
-              <span class="online-dot"></span>
-              <strong>Bhanu</strong>
-              <small>Online</small>
-            </li>
-          </ul>
-        </section>
-        <section class="card">
-          <p class="eyebrow">NETWORK SUMMARY</p>
-          <h2>Statistics</h2>
-          <div class="info-list">
-            <p><span>Connected Nodes</span><strong>4</strong></p>
-            <p>
-              <span>Network Status</span
-              ><strong class="green-text">Online</strong>
-            </p>
-            <p><span>Latest Block</span><strong>#3</strong></p>
-            <p><span>Network Type</span><strong>Test Network</strong></p>
+      <div class="container">
+        <section class="hero">
+          <div>
+            <div class="eyebrow">Peer Network</div>
+            <h1>Network</h1>
+            <p>See the simulated nodes connected to BitForge.</p>
           </div>
+          <span class="badge">● Network Online</span>
         </section>
+        <div class="grid two">
+          <div class="card">
+            <div class="card-title">
+              <h2>Connected Nodes</h2>
+              <span class="small">4 peers</span>
+            </div>
+            <div class="node">
+              <span class="dot"></span>
+              <div class="node-info">
+                <div class="node-name">Rahul</div>
+                <div class="node-meta">Node A • Online</div>
+              </div>
+              <span class="good">●</span>
+            </div>
+            <div class="node">
+              <span class="dot"></span>
+              <div class="node-info">
+                <div class="node-name">Anil</div>
+                <div class="node-meta">Node B • Online</div>
+              </div>
+              <span class="good">●</span>
+            </div>
+            <div class="node">
+              <span class="dot"></span>
+              <div class="node-info">
+                <div class="node-name">Sneha</div>
+                <div class="node-meta">Node C • Online</div>
+              </div>
+              <span class="good">●</span>
+            </div>
+            <div class="node">
+              <span class="dot"></span>
+              <div class="node-info">
+                <div class="node-name" data-user>Bhanu</div>
+                <div class="node-meta">Your node • Online</div>
+              </div>
+              <span class="good">●</span>
+            </div>
+          </div>
+          <div class="card">
+            <div class="card-title"><h2>Network Stats</h2></div>
+            <div class="stat">
+              <span>Status</span><strong class="good">Online</strong>
+            </div>
+            <div class="stat">
+              <span>Connected peers</span><strong>4</strong>
+            </div>
+            <div class="stat">
+              <span>Latest block</span
+              ><strong>#<span data-blocks>1</span></strong>
+            </div>
+            <div class="stat">
+              <span>Consensus</span><strong>Proof of Work</strong>
+            </div>
+            <div class="stat"><span>Latency</span><strong>24 ms</strong></div>
+          </div>
+        </div>
       </div>
     </main>
-    <footer>BitForge — Educational blockchain simulation.</footer>
+    <footer>BitForge • BitForge Blockchain</footer>
     <script src="../script.js"></script>
   </body>
 </html>

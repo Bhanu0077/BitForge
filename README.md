@@ -1,30 +1,17 @@
-# BitForge - Simple Multi Page UI
+# BitForge
 
-BitForge is a beginner-level HTML, CSS and JavaScript web programming lab project.
+A simple blockchain dashboard made with HTML, CSS and JavaScript.
 
 ## Pages
+- Login / Signup
+- Dashboard
+- Wallet
+- Transactions
+- Mining
+- Blockchain
+- Network
 
-- `index.html` - Dashboard
-- `login.html` - Login page
-- `signup.html` - Sign-up page
-- `wallet.html` - Wallet
-- `transactions.html` - Transactions
-- `mining.html` - Mining
-- `blockchain.html` - Blockchain
-- `network.html` - Network
+## Technologies
+HTML, CSS, JavaScript and localStorage.
 
-## How to run
-
-Open `index.html` in a browser.
-
-You can also use:
-
-```bash
-python3 -m http.server 8000
-```
-
-Then open `http://localhost:8000`.
-
-## Important
-
-Login and sign-up are only frontend demonstrations. JavaScript uses `localStorage` to remember the demo user's name. There is no real database, server, cryptocurrency or blockchain backend.
+Open `html/login.html` to start.

@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>BitForge | Mining</title>
+    <link rel="stylesheet" href="../style.css" />
+  </head>
+  <body>
+    <header class="site-header">
+      <a class="brand" href="index.html"
+        ><span class="brand-mark">BF</span
+        ><span
+          ><strong>BITFORGE</strong><small>Blockchain Simulation</small></span
+        ></a
+      ><button class="menu-button" id="menu-button">☰</button>
+      <nav class="main-nav" id="main-nav">
+        <a href="index.html">Dashboard</a><a href="wallet.html">Wallet</a
+        ><a href="transactions.html">Transactions</a
+        ><a href="blockchain.html">Blockchain</a
+        ><a class="active" href="mining.html">Mining</a
+        ><a href="network.html">Network</a>
+      </nav>
+      <div class="user-area">
+        <span id="welcome-user">User</span
+        ><a class="logout" href="login.html" onclick="logoutUser()">Logout</a>
+      </div>
+    </header>
+    <main>
+      <section class="hero">
+        <div>
+          <p class="eyebrow">PROOF-OF-WORK PREVIEW</p>
+          <h1>Mining</h1>
+          <p>Understand the basic idea of adding a new block to the chain.</p>
+        </div>
+      </section>
+      <div class="content-grid">
+        <section class="card mining">
+          <div class="big-icon">⛏</div>
+          <h2>Mining Simulator</h2>
+          <p class="muted">
+            This is only a visual demonstration for the lab project.
+          </p>
+          <div class="stats">
+            <p><span>Pending Transactions</span><strong>3</strong></p>
+            <p><span>Mining Reward</span><strong>10 BF</strong></p>
+            <p><span>Difficulty</span><strong>4</strong></p>
+          </div>
+          <button class="primary-button" id="mine-button">Start Mining</button>
+        </section>
+        <section class="card">
+          <p class="eyebrow">HOW IT WORKS</p>
+          <h2>Simple Steps</h2>
+          <ol class="steps">
+            <li>Transactions are collected.</li>
+            <li>A new block is prepared.</li>
+            <li>The miner searches for a valid value.</li>
+            <li>The block is added to the blockchain.</li>
+          </ol>
+        </section>
+      </div>
+    </main>
+    <footer>BitForge — Educational blockchain simulation.</footer>
+    <script src="../script.js"></script>
+  </body>
+</html>

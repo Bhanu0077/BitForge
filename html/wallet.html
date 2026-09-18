@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>BitForge | Wallet</title>
+    <link rel="stylesheet" href="../style.css" />
+  </head>
+  <body>
+    <header class="site-header">
+      <a class="brand" href="index.html"
+        ><span class="brand-mark">BF</span
+        ><span
+          ><strong>BITFORGE</strong><small>Blockchain Simulation</small></span
+        ></a
+      ><button class="menu-button" id="menu-button">☰</button>
+      <nav class="main-nav" id="main-nav">
+        <a href="index.html">Dashboard</a
+        ><a class="active" href="wallet.html">Wallet</a
+        ><a href="transactions.html">Transactions</a
+        ><a href="blockchain.html">Blockchain</a><a href="mining.html">Mining</a
+        ><a href="network.html">Network</a>
+      </nav>
+      <div class="user-area">
+        <span id="welcome-user">User</span
+        ><a class="logout" href="login.html" onclick="logoutUser()">Logout</a>
+      </div>
+    </header>
+    <main>
+      <section class="hero">
+        <div>
+          <p class="eyebrow">PERSONAL WALLET</p>
+          <h1>My Wallet</h1>
+          <p>View your demo wallet information and balance.</p>
+        </div>
+      </section>
+      <div class="content-grid">
+        <section class="card wallet">
+          <p class="label">Wallet Address</p>
+          <h2 class="wallet-address">BF8A72F91C4D8B2E...</h2>
+          <div class="balance-box wallet-balance">
+            <p class="label">Balance</p>
+            <p class="balance">100 <span>BF</span></p>
+          </div>
+        </section>
+        <section class="card">
+          <p class="eyebrow">WALLET INFORMATION</p>
+          <h2>Account Details</h2>
+          <div class="info-list">
+            <p><span>Wallet Type</span><strong>Demo Wallet</strong></p>
+            <p><span>Network</span><strong>BitForge Test Network</strong></p>
+            <p><span>Status</span><strong class="green-text">Active</strong></p>
+            <p><span>Currency</span><strong>BF Coin</strong></p>
+          </div>
+        </section>
+      </div>
+    </main>
+    <footer>BitForge — Educational blockchain simulation.</footer>
+    <script src="../script.js"></script>
+  </body>
+</html>
+

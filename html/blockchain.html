@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>BitForge | Blockchain</title>
+    <link rel="stylesheet" href="../style.css" />
+  </head>
+  <body>
+    <header class="site-header">
+      <a class="brand" href="index.html"
+        ><span class="brand-mark">BF</span
+        ><span
+          ><strong>BITFORGE</strong><small>Blockchain Simulation</small></span
+        ></a
+      ><button class="menu-button" id="menu-button">☰</button>
+      <nav class="main-nav" id="main-nav">
+        <a href="index.html">Dashboard</a><a href="wallet.html">Wallet</a
+        ><a href="transactions.html">Transactions</a
+        ><a class="active" href="blockchain.html">Blockchain</a
+        ><a href="mining.html">Mining</a><a href="network.html">Network</a>
+      </nav>
+      <div class="user-area">
+        <span id="welcome-user">User</span
+        ><a class="logout" href="login.html" onclick="logoutUser()">Logout</a>
+      </div>
+    </header>
+    <main>
+      <section class="hero">
+        <div>
+          <p class="eyebrow">SHARED LEDGER</p>
+          <h1>Blockchain</h1>
+          <p>A visual preview of how blocks can be connected together.</p>
+        </div>
+      </section>
+      <section class="card">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">CHAIN PREVIEW</p>
+            <h2>Blocks</h2>
+          </div>
+          <span class="placeholder-label">Demo Chain</span>
+        </div>
+        <div class="chain">
+          <div class="block genesis">
+            <strong>Block #0</strong><span>Genesis</span
+            ><small>Hash: 0000A1</small>
+          </div>
+          <span class="chain-arrow">→</span>
+          <div class="block">
+            <strong>Block #1</strong><span>3 Transactions</span
+            ><small>Hash: 0000B2</small>
+          </div>
+          <span class="chain-arrow">→</span>
+          <div class="block">
+            <strong>Block #2</strong><span>2 Transactions</span
+            ><small>Hash: 0000C3</small>
+          </div>
+          <span class="chain-arrow">→</span>
+          <div class="block">
+            <strong>Block #3</strong><span>4 Transactions</span
+            ><small>Hash: 0000D4</small>
+          </div>
+        </div>
+      </section>
+      <section class="validation card">
+        <div>
+          <p class="eyebrow">INTEGRITY CHECK</p>
+          <h2>Blockchain Status</h2>
+          <p class="valid-status">✓ Blockchain Valid</p>
+        </div>
+        <button class="secondary-button" id="verify-button">
+          Verify Blockchain
+        </button>
+      </section>
+    </main>
+    <footer>BitForge — Educational blockchain simulation.</footer>
+    <script src="../script.js"></script>
+  </body>
+</html>

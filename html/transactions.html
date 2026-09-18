@@ -1,0 +1,87 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>BitForge | Transactions</title>
+    <link rel="stylesheet" href="../style.css" />
+  </head>
+  <body>
+    <header class="site-header">
+      <a class="brand" href="index.html"
+        ><span class="brand-mark">BF</span
+        ><span
+          ><strong>BITFORGE</strong><small>Blockchain Simulation</small></span
+        ></a
+      ><button class="menu-button" id="menu-button">☰</button>
+      <nav class="main-nav" id="main-nav">
+        <a href="index.html">Dashboard</a><a href="wallet.html">Wallet</a
+        ><a class="active" href="transactions.html">Transactions</a
+        ><a href="blockchain.html">Blockchain</a><a href="mining.html">Mining</a
+        ><a href="network.html">Network</a>
+      </nav>
+      <div class="user-area">
+        <span id="welcome-user">User</span
+        ><a class="logout" href="login.html" onclick="logoutUser()">Logout</a>
+      </div>
+    </header>
+    <main>
+      <section class="hero">
+        <div>
+          <p class="eyebrow">ACTIVITY</p>
+          <h1>Transactions</h1>
+          <p>A simple table showing sample BitForge transactions.</p>
+        </div>
+      </section>
+      <section class="card">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">RECENT ACTIVITY</p>
+            <h2>Transaction History</h2>
+          </div>
+          <span class="placeholder-label">Demo Data</span>
+        </div>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Type</th>
+                <th>User</th>
+                <th>Amount</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td class="sent">↗ Sent</td>
+                <td>Rahul</td>
+                <td>20 BF</td>
+                <td><span class="confirmed">Confirmed</span></td>
+              </tr>
+              <tr>
+                <td class="received">↓ Received</td>
+                <td>Anil</td>
+                <td>10 BF</td>
+                <td><span class="confirmed">Confirmed</span></td>
+              </tr>
+              <tr>
+                <td class="sent">↗ Sent</td>
+                <td>Rahul</td>
+                <td>5 BF</td>
+                <td><span class="pending">Pending</span></td>
+              </tr>
+              <tr>
+                <td class="received">↓ Received</td>
+                <td>Sneha</td>
+                <td>15 BF</td>
+                <td><span class="confirmed">Confirmed</span></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+    </main>
+    <footer>BitForge — Educational blockchain simulation.</footer>
+    <script src="../script.js"></script>
+  </body>
+</html>

@@ -1,1 +1,62 @@
-<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Blockchain • BitForge</title><link rel="stylesheet" href="../style.css"></head><body><header><div class="container nav"><a class="brand" href="index.html">Bit<span>Forge</span></a><nav><a href="index.html">Dashboard</a><a href="wallet.html">Wallet</a><a href="transactions.html">Transactions</a><a href="mining.html">Mining</a><a class="active" href="blockchain.html">Blockchain</a><a href="network.html">Network</a></nav></div></header><main><div class="container"><section class="hero"><div><div class="eyebrow">Explorer</div><h1>Blockchain</h1><p>Inspect blocks, hashes and the links between them.</p></div><span class="badge"><span data-blocks>1</span> blocks</span></section><div id="blocks"></div><div class="card"><div class="card-title"><h2>Chain Validation</h2><span class="good">● Ready</span></div><p class="small">A block points to the hash of the previous block. This simplified explorer lets you visualize that relationship.</p><div class="actions" style="margin-top:16px"><button class="btn secondary" onclick="showMessage('Blockchain validation passed in this network.')">Validate Chain</button><a class="btn secondary" href="mining.html">Mine Another Block</a></div><div id="message"></div></div></div></main><footer>BitForge • BitForge Blockchain</footer><script src="../script.js"></script></body></html>
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Blockchain • BitForge</title>
+    <link rel="stylesheet" href="../style.css" />
+  </head>
+  <body>
+    <header>
+      <div class="container nav">
+        <a class="brand" href="index.html">Bit<span>Forge</span></a>
+        <nav>
+          <a href="index.html">Dashboard</a><a href="wallet.html">Wallet</a
+          ><a href="transactions.html">Transactions</a
+          ><a href="mining.html">Mining</a
+          ><a class="active" href="blockchain.html">Blockchain</a
+          ><a href="network.html">Network</a>
+        </nav>
+        <div class="nav-user">
+          <span class="avatar">B</span><span data-user>Bhanu</span>
+        </div>
+      </div>
+    </header>
+    <main>
+      <div class="container">
+        <section class="hero">
+          <div>
+            <div class="eyebrow">Explorer</div>
+            <h1>Blockchain</h1>
+            <p>Inspect blocks, hashes and the links between them.</p>
+          </div>
+          <span class="badge"><span data-blocks>1</span> blocks</span>
+        </section>
+        <div id="blocks"></div>
+        <div class="card">
+          <div class="card-title">
+            <h2>Chain Validation</h2>
+            <span class="good">● Ready</span>
+          </div>
+          <p class="small">
+            A block points to the hash of the previous block. This simplified
+            explorer lets you visualize that relationship.
+          </p>
+          <div class="actions" style="margin-top: 16px">
+            <button
+              class="btn secondary"
+              onclick="
+                showMessage('Blockchain validation passed in this network.')
+              "
+            >
+              Validate Chain</button
+            ><a class="btn secondary" href="mining.html">Mine Another Block</a>
+          </div>
+          <div id="message"></div>
+        </div>
+      </div>
+    </main>
+    <footer>BitForge • BitForge Blockchain</footer>
+    <script src="../script.js"></script>
+  </body>
+</html>

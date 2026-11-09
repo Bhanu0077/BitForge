@@ -1,0 +1,61 @@
+signup_html = '''<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BitForge - Create Account</title>
+    <link rel="stylesheet" href="../style.css">
+</head>
+<body style="display: flex; justify-content: center; align-items: center; min-height: 100vh; background: #0f172a; padding: 20px 0;">
+    <div style="background: #1e293b; padding: 30px; border-radius: 12px; border: 1px solid #00d2ff; width: 90%; max-width: 420px; text-align: center;">
+        <h2 style="color: #00d2ff; margin-bottom: 10px;">Join BitForge</h2>
+        <p style="font-size: 0.9rem; opacity: 0.8; margin-bottom: 20px;">Register a multi-user blockchain wallet</p>
+
+        <form onsubmit="handleSignup(event)">
+            <div style="margin-bottom: 12px; text-align: left;">
+                <label style="font-size: 0.85rem; color: #94a3b8;">Email Address</label>
+                <input type="email" id="signupEmail" required placeholder="name@example.com" style="width: 100%; padding: 10px; border-radius: 6px; border: 1px solid #334155; background: #0f172a; color: #fff; margin-top: 4px;">
+            </div>
+
+            <div style="margin-bottom: 12px; text-align: left;">
+                <label style="font-size: 0.85rem; color: #94a3b8;">Password</label>
+                <input type="password" id="signupPassword" required placeholder="••••••••" style="width: 100%; padding: 10px; border-radius: 6px; border: 1px solid #334155; background: #0f172a; color: #fff; margin-top: 4px;">
+            </div>
+
+            <div style="margin-bottom: 12px; text-align: left;">
+                <label style="font-size: 0.85rem; color: #94a3b8;">Confirm Password</label>
+                <input type="password" id="signupConfirm" required placeholder="••••••••" style="width: 100%; padding: 10px; border-radius: 6px; border: 1px solid #334155; background: #0f172a; color: #fff; margin-top: 4px;">
+            </div>
+
+            <div style="margin-bottom: 12px; text-align: left;">
+                <label style="font-size: 0.85rem; color: #94a3b8;">Security Recovery Question</label>
+                <select id="secretQuestion" style="width: 100%; padding: 10px; border-radius: 6px; border: 1px solid #334155; background: #0f172a; color: #fff; margin-top: 4px;">
+                    <option value="pet">What is the name of your first pet?</option>
+                    <option value="city">What city were you born in?</option>
+                    <option value="school">What was your first school?</option>
+                </select>
+            </div>
+
+            <div style="margin-bottom: 20px; text-align: left;">
+                <label style="font-size: 0.85rem; color: #94a3b8;">Security Secret Answer</label>
+                <input type="text" id="secretAnswer" required placeholder="Your answer..." style="width: 100%; padding: 10px; border-radius: 6px; border: 1px solid #334155; background: #0f172a; color: #fff; margin-top: 4px;">
+            </div>
+
+            <button type="submit" style="width: 100%; padding: 12px; background: #00d2ff; color: #000; font-weight: bold; border: none; border-radius: 6px; cursor: pointer; font-size: 1rem;">Create Account (+100 BFG)</button>
+        </form>
+
+        <div id="message" style="margin-top: 15px; font-size: 0.9rem; font-weight: bold;"></div>
+
+        <div style="margin-top: 20px; font-size: 0.85rem;">
+            <a href="login.html" style="color: #00d2ff; text-decoration: none;">Already have an account? Login</a>
+        </div>
+    </div>
+
+    <script src="../script.js"></script>
+</body>
+</html>'''
+
+with open("html/signup.html", "w") as f:
+    f.write(signup_html)
+
+print("html/signup.html updated!")

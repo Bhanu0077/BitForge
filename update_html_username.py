@@ -1,0 +1,169 @@
+# 1. login.html
+login_html = '''<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BitForge - Login</title>
+    <link rel="stylesheet" href="../style.css">
+    <style>
+        .input-group { position: relative; width: 100%; }
+        .eye-btn { position: absolute; right: 10px; top: 50%; transform: translateY(-50%); background: none; border: none; cursor: pointer; font-size: 1.1rem; color: #94a3b8; }
+    </style>
+</head>
+<body style="display: flex; justify-content: center; align-items: center; min-height: 100vh; background: #0f172a;">
+    <div style="background: #1e293b; padding: 30px; border-radius: 12px; border: 1px solid #00d2ff; width: 90%; max-width: 400px; text-align: center;">
+        <h2 style="color: #00d2ff; margin-bottom: 10px;">BitForge Login</h2>
+        <p style="font-size: 0.9rem; opacity: 0.8; margin-bottom: 20px;">Access your blockchain wallet</p>
+
+        <form id="loginForm" onsubmit="handleLogin(event)">
+            <div style="margin-bottom: 15px; text-align: left;">
+                <label style="font-size: 0.85rem; color: #94a3b8;">Username</label>
+                <input type="text" id="loginUsername" required placeholder="e.g. bhanu" style="width: 100%; padding: 12px; border-radius: 6px; border: 1px solid #334155; background: #0f172a; color: #fff; margin-top: 5px;">
+            </div>
+
+            <div style="margin-bottom: 20px; text-align: left;">
+                <label style="font-size: 0.85rem; color: #94a3b8;">Password</label>
+                <div class="input-group">
+                    <input type="password" id="loginPassword" required placeholder="••••••••" style="width: 100%; padding: 12px 40px 12px 12px; border-radius: 6px; border: 1px solid #334155; background: #0f172a; color: #fff; margin-top: 5px;">
+                    <button type="button" class="eye-btn" onclick="togglePasswordVisibility('loginPassword', this)">👁️</button>
+                </div>
+            </div>
+
+            <button type="submit" style="width: 100%; padding: 12px; background: #00d2ff; color: #000; font-weight: bold; border: none; border-radius: 6px; cursor: pointer; font-size: 1rem;">Login to Wallet</button>
+        </form>
+
+        <div id="authMessage" style="margin-top: 15px; font-size: 0.9rem; font-weight: bold;"></div>
+
+        <div style="margin-top: 20px; font-size: 0.85rem;">
+            <a href="signup.html" style="color: #00d2ff; text-decoration: none;">Create New Account</a> | 
+            <a href="forgot-password.html" style="color: #94a3b8; text-decoration: none;">Forgot Password?</a>
+        </div>
+    </div>
+
+    <script src="../script.js"></script>
+</body>
+</html>'''
+
+# 2. signup.html
+signup_html = '''<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BitForge - Create Account</title>
+    <link rel="stylesheet" href="../style.css">
+    <style>
+        .input-group { position: relative; width: 100%; }
+        .eye-btn { position: absolute; right: 10px; top: 50%; transform: translateY(-50%); background: none; border: none; cursor: pointer; font-size: 1.1rem; color: #94a3b8; }
+    </style>
+</head>
+<body style="display: flex; justify-content: center; align-items: center; min-height: 100vh; background: #0f172a; padding: 20px 0;">
+    <div style="background: #1e293b; padding: 30px; border-radius: 12px; border: 1px solid #00d2ff; width: 90%; max-width: 420px; text-align: center;">
+        <h2 style="color: #00d2ff; margin-bottom: 10px;">Join BitForge</h2>
+        <p style="font-size: 0.9rem; opacity: 0.8; margin-bottom: 20px;">Register a multi-user blockchain wallet</p>
+
+        <form onsubmit="handleSignup(event)">
+            <div style="margin-bottom: 12px; text-align: left;">
+                <label style="font-size: 0.85rem; color: #94a3b8;">Choose Username</label>
+                <input type="text" id="signupUsername" required placeholder="e.g. kala" style="width: 100%; padding: 10px; border-radius: 6px; border: 1px solid #334155; background: #0f172a; color: #fff; margin-top: 4px;">
+            </div>
+
+            <div style="margin-bottom: 12px; text-align: left;">
+                <label style="font-size: 0.85rem; color: #94a3b8;">Password</label>
+                <div class="input-group">
+                    <input type="password" id="signupPassword" required placeholder="••••••••" style="width: 100%; padding: 10px 40px 10px 10px; border-radius: 6px; border: 1px solid #334155; background: #0f172a; color: #fff; margin-top: 4px;">
+                    <button type="button" class="eye-btn" onclick="togglePasswordVisibility('signupPassword', this)">👁️</button>
+                </div>
+            </div>
+
+            <div style="margin-bottom: 12px; text-align: left;">
+                <label style="font-size: 0.85rem; color: #94a3b8;">Confirm Password</label>
+                <div class="input-group">
+                    <input type="password" id="signupConfirm" required placeholder="••••••••" style="width: 100%; padding: 10px 40px 10px 10px; border-radius: 6px; border: 1px solid #334155; background: #0f172a; color: #fff; margin-top: 4px;">
+                    <button type="button" class="eye-btn" onclick="togglePasswordVisibility('signupConfirm', this)">👁️</button>
+                </div>
+            </div>
+
+            <div style="margin-bottom: 12px; text-align: left;">
+                <label style="font-size: 0.85rem; color: #94a3b8;">Security Recovery Question</label>
+                <select id="secretQuestion" style="width: 100%; padding: 10px; border-radius: 6px; border: 1px solid #334155; background: #0f172a; color: #fff; margin-top: 4px;">
+                    <option value="pet">What is the name of your first pet?</option>
+                    <option value="city">What city were you born in?</option>
+                    <option value="school">What was your first school?</option>
+                </select>
+            </div>
+
+            <div style="margin-bottom: 20px; text-align: left;">
+                <label style="font-size: 0.85rem; color: #94a3b8;">Security Secret Answer</label>
+                <input type="text" id="secretAnswer" required placeholder="Your answer..." style="width: 100%; padding: 10px; border-radius: 6px; border: 1px solid #334155; background: #0f172a; color: #fff; margin-top: 4px;">
+            </div>
+
+            <button type="submit" style="width: 100%; padding: 12px; background: #00d2ff; color: #000; font-weight: bold; border: none; border-radius: 6px; cursor: pointer; font-size: 1rem;">Create Account (+100 BFG)</button>
+        </form>
+
+        <div id="message" style="margin-top: 15px; font-size: 0.9rem; font-weight: bold;"></div>
+
+        <div style="margin-top: 20px; font-size: 0.85rem;">
+            <a href="login.html" style="color: #00d2ff; text-decoration: none;">Already have an account? Login</a>
+        </div>
+    </div>
+
+    <script src="../script.js"></script>
+</body>
+</html>'''
+
+# 3. forgot-password.html
+forgot_html = '''<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BitForge - Recover Password</title>
+    <link rel="stylesheet" href="../style.css">
+</head>
+<body style="display: flex; justify-content: center; align-items: center; min-height: 100vh; background: #0f172a;">
+    <div style="background: #1e293b; padding: 30px; border-radius: 12px; border: 1px solid #00d2ff; width: 90%; max-width: 400px; text-align: center;">
+        <h2 style="color: #00d2ff; margin-bottom: 10px;">Reset Password</h2>
+        <p style="font-size: 0.9rem; opacity: 0.8; margin-bottom: 20px;">Verify secret answer to recover password</p>
+
+        <form onsubmit="handleForgotPassword(event)">
+            <div style="margin-bottom: 15px; text-align: left;">
+                <label style="font-size: 0.85rem; color: #94a3b8;">Username</label>
+                <input type="text" id="forgotUsername" required placeholder="Your username" style="width: 100%; padding: 12px; border-radius: 6px; border: 1px solid #334155; background: #0f172a; color: #fff; margin-top: 5px;">
+            </div>
+
+            <div style="margin-bottom: 15px; text-align: left;">
+                <label style="font-size: 0.85rem; color: #94a3b8;">Secret Answer</label>
+                <input type="text" id="forgotAnswer" required placeholder="Enter secret answer..." style="width: 100%; padding: 12px; border-radius: 6px; border: 1px solid #334155; background: #0f172a; color: #fff; margin-top: 5px;">
+            </div>
+
+            <div style="margin-bottom: 20px; text-align: left;">
+                <label style="font-size: 0.85rem; color: #94a3b8;">New Password</label>
+                <input type="password" id="forgotNewPassword" required placeholder="••••••••" style="width: 100%; padding: 12px; border-radius: 6px; border: 1px solid #334155; background: #0f172a; color: #fff; margin-top: 5px;">
+            </div>
+
+            <button type="submit" style="width: 100%; padding: 12px; background: #00d2ff; color: #000; font-weight: bold; border: none; border-radius: 6px; cursor: pointer; font-size: 1rem;">Update Password</button>
+        </form>
+
+        <div id="message" style="margin-top: 15px; font-size: 0.9rem; font-weight: bold;"></div>
+
+        <div style="margin-top: 20px; font-size: 0.85rem;">
+            <a href="login.html" style="color: #00d2ff; text-decoration: none;">Back to Login</a>
+        </div>
+    </div>
+
+    <script src="../script.js"></script>
+</body>
+</html>'''
+
+with open("html/login.html", "w") as f:
+    f.write(login_html)
+
+with open("html/signup.html", "w") as f:
+    f.write(signup_html)
+
+with open("html/forgot-password.html", "w") as f:
+    f.write(forgot_html)
+
+print("Auth HTML forms updated with Username fields!")

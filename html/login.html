@@ -1,39 +1,45 @@
-<!doctype html>
-<html>
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width,initial-scale=1" />
-    <title>Login • BitForge</title>
-    <link rel="stylesheet" href="../style.css" />
-  </head>
-  <body class="auth-page">
-    <main>
-      <div class="auth">
-        <div class="brand">Bit<span>Forge</span></div>
-        <div class="card">
-          <div class="eyebrow">Blockchain Lab</div>
-          <h1>Welcome back</h1>
-          <p class="auth-sub">Enter a username to open your BitForge wallet.</p>
-          <form
-            onsubmit="
-              event.preventDefault();
-              saveUser();
-            "
-          >
-            <label>Username</label
-            ><input id="name" placeholder="e.g. Bhanu" required /><button
-              class="btn"
-            >
-              Enter BitForge
-            </button>
-          </form>
-          <p class="auth-links">
-            No account? <a class="accent" href="signup.html">Create one</a>
-          </p>
-          <div class="notice">Sign in with your BitForge username.</div>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BitForge - Login</title>
+    <link rel="stylesheet" href="../style.css">
+    <style>
+        .input-group { position: relative; width: 100%; }
+        .eye-btn { position: absolute; right: 10px; top: 50%; transform: translateY(-50%); background: none; border: none; cursor: pointer; font-size: 1.1rem; color: #94a3b8; }
+    </style>
+</head>
+<body style="display: flex; justify-content: center; align-items: center; min-height: 100vh; background: #0f172a;">
+    <div style="background: #1e293b; padding: 30px; border-radius: 12px; border: 1px solid #00d2ff; width: 90%; max-width: 400px; text-align: center;">
+        <h2 style="color: #00d2ff; margin-bottom: 10px;">BitForge Login</h2>
+        <p style="font-size: 0.9rem; opacity: 0.8; margin-bottom: 20px;">Access your blockchain wallet</p>
+
+        <form id="loginForm" onsubmit="handleLogin(event)">
+            <div style="margin-bottom: 15px; text-align: left;">
+                <label style="font-size: 0.85rem; color: #94a3b8;">Username</label>
+                <input type="text" id="loginUsername" required placeholder="e.g. bhanu" style="width: 100%; padding: 12px; border-radius: 6px; border: 1px solid #334155; background: #0f172a; color: #fff; margin-top: 5px;">
+            </div>
+
+            <div style="margin-bottom: 20px; text-align: left;">
+                <label style="font-size: 0.85rem; color: #94a3b8;">Password</label>
+                <div class="input-group">
+                    <input type="password" id="loginPassword" required placeholder="••••••••" style="width: 100%; padding: 12px 40px 12px 12px; border-radius: 6px; border: 1px solid #334155; background: #0f172a; color: #fff; margin-top: 5px;">
+                    <button type="button" class="eye-btn" onclick="togglePasswordVisibility('loginPassword', this)">👁️</button>
+                </div>
+            </div>
+
+            <button type="submit" style="width: 100%; padding: 12px; background: #00d2ff; color: #000; font-weight: bold; border: none; border-radius: 6px; cursor: pointer; font-size: 1rem;">Login to Wallet</button>
+        </form>
+
+        <div id="authMessage" style="margin-top: 15px; font-size: 0.9rem; font-weight: bold;"></div>
+
+        <div style="margin-top: 20px; font-size: 0.85rem;">
+            <a href="signup.html" style="color: #00d2ff; text-decoration: none;">Create New Account</a> | 
+            <a href="forgot-password.html" style="color: #94a3b8; text-decoration: none;">Forgot Password?</a>
         </div>
-      </div>
-    </main>
+    </div>
+
     <script src="../script.js"></script>
-  </body>
+</body>
 </html>

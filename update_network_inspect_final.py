@@ -1,0 +1,191 @@
+net_html = '''<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BitForge - Network Peers & Ledger Inspector</title>
+    <link rel="stylesheet" href="../style.css">
+    <style>
+        .grid-3 { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 20px; margin-top: 20px; }
+        .net-card { border: 1px solid #00d2ff; padding: 20px; border-radius: 10px; background: rgba(0, 210, 255, 0.05); }
+        .peer-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 15px; margin-top: 20px; }
+        .peer-card { border: 1px solid rgba(0, 210, 255, 0.3); padding: 18px; border-radius: 10px; background: #1a1a1a; display: flex; justify-content: space-between; align-items: center; }
+        .peer-avatar { width: 45px; height: 45px; border-radius: 50%; background: linear-gradient(135deg, #00d2ff, #2ecc71); display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 1.2rem; color: #000; text-transform: uppercase; }
+        .action-group { display: flex; gap: 8px; }
+        .btn-inspect { padding: 6px 12px; background: #9b59b6; color: #fff; border: none; font-weight: bold; cursor: pointer; border-radius: 5px; font-size: 0.8rem; }
+        .btn-inspect:hover { background: #8e44ad; }
+        .btn-pay { padding: 6px 12px; background: #00d2ff; color: #000; border: none; font-weight: bold; cursor: pointer; border-radius: 5px; text-decoration: none; font-size: 0.8rem; }
+        .btn-pay:hover { background: #2ecc71; color: #fff; }
+
+        .modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); justify-content: center; align-items: center; z-index: 1000; }
+        .modal-overlay.active { display: flex; }
+        .modal-card { background: #1e1e1e; border: 1px solid #00d2ff; padding: 25px; border-radius: 12px; width: 90%; max-width: 650px; max-height: 80vh; overflow-y: auto; box-shadow: 0 0 20px rgba(0,210,255,0.3); }
+    </style>
+</head>
+<body>
+    <nav>
+        <a href="index.html">Dashboard</a>
+        <a href="wallet.html">Wallet</a>
+        <a href="transactions.html">Transactions / Pay</a>
+        <a href="mining.html">Mining</a>
+        <a href="blockchain.html">Ledger</a>
+        <a href="network.html" class="active">Network</a>
+        <button onclick="logout()" style="background: #e74c3c; padding: 5px 15px; border: none; cursor: pointer;">Logout</button>
+    </nav>
+
+    <div class="container" style="padding: 20px;">
+        <h2>Network Peers & Public Ledger Inspector</h2>
+        <p>Inspect public wallet balances and detailed activity across active users in the BitForge network:</p>
+
+        <div class="grid-3">
+            <div class="net-card">
+                <h4 style="opacity: 0.8; margin: 0;">Total Ecosystem Peers</h4>
+                <h1 id="netUsers" style="color: #00d2ff; margin: 10px 0;">--</h1>
+            </div>
+            <div class="net-card">
+                <h4 style="opacity: 0.8; margin: 0;">Mined Chain Blocks</h4>
+                <h1 id="netBlocks" style="color: #2ecc71; margin: 10px 0;">--</h1>
+            </div>
+            <div class="net-card">
+                <h4 style="opacity: 0.8; margin: 0;">Total Network Transactions</h4>
+                <h1 id="netTxs" style="color: #9b59b6; margin: 10px 0;">--</h1>
+            </div>
+        </div>
+
+        <h3 style="margin-top: 35px;">Active Peer User Directory</h3>
+        <div class="peer-grid" id="peerDirectory">
+            <div style="grid-column: 1 / -1; text-align: center; opacity: 0.7;">Loading network peers...</div>
+        </div>
+    </div>
+
+    <!-- Inspector Modal -->
+    <div class="modal-overlay" id="inspectModal">
+        <div class="modal-card">
+            <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #00d2ff; padding-bottom: 10px;">
+                <h3 id="modalUserEmail" style="margin: 0; color: #00d2ff;">User Inspection</h3>
+                <button onclick="closeModal()" style="background: #e74c3c; color: #fff; border: none; padding: 5px 10px; cursor: pointer; border-radius: 4px; font-weight: bold;">✕ Close</button>
+            </div>
+            
+            <div style="margin: 15px 0;">
+                <p><strong>Public Wallet Balance:</strong> <span id="modalUserBalance" style="color: #2ecc71; font-weight: bold; font-size: 1.3rem;">0.00 BFG</span></p>
+            </div>
+
+            <h4>Transaction History & Ledger Entries</h4>
+            <table style="width: 100%; border-collapse: collapse; margin-top: 10px; font-size: 0.9rem;">
+                <thead>
+                    <tr style="border-bottom: 1px solid #00d2ff; text-align: left;">
+                        <th style="padding: 8px;">Type</th>
+                        <th style="padding: 8px;">Counterparty</th>
+                        <th style="padding: 8px;">Amount</th>
+                        <th style="padding: 8px;">Time</th>
+                    </tr>
+                </thead>
+                <tbody id="modalTxBody">
+                    <tr><td colspan="4" style="padding: 10px; text-align: center;">No transactions logged.</td></tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <script src="../script.js"></script>
+    <script>
+        let globalTxs = [];
+
+        async function loadPeersDirectory() {
+            try {
+                const resNet = await fetch("/BitForge/api/network");
+                const dataNet = await resNet.json();
+
+                const resTx = await fetch("/BitForge/api/transactions");
+                const dataTx = await resTx.json();
+                if (dataTx.transactions) globalTxs = dataTx.transactions;
+
+                if (dataNet.success) {
+                    document.getElementById("netUsers").textContent = dataNet.users;
+                    document.getElementById("netBlocks").textContent = dataNet.blocks;
+                    document.getElementById("netTxs").textContent = dataNet.transactions;
+
+                    const activeUser = localStorage.getItem("bitforgeUser") || "";
+                    const peerGrid = document.getElementById("peerDirectory");
+
+                    if (dataNet.peers && dataNet.peers.length > 0) {
+                        peerGrid.innerHTML = dataNet.peers.map(p => {
+                            const initial = p.email.charAt(0).toUpperCase();
+                            const isSelf = p.email.toLowerCase() === activeUser.toLowerCase();
+                            const displayBal = p.is_private ? "🔒 Private" : p.balance.toFixed(2) + " BFG";
+                            
+                            return `
+                                <div class="peer-card" style="${isSelf ? 'border-color: #2ecc71;' : ''}">
+                                    <div style="display: flex; align-items: center; gap: 12px;">
+                                        <div class="peer-avatar">${initial}</div>
+                                        <div>
+                                            <strong style="font-size: 0.95rem;">${p.email}</strong> ${isSelf ? '<span style="color: #2ecc71; font-size: 0.75rem;">(You)</span>' : ''}
+                                            <div style="font-size: 0.85rem; color: ${p.is_private ? '#e74c3c' : '#2ecc71'}; font-weight: bold; margin-top: 3px;">
+                                                ${displayBal}
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="action-group">
+                                        <button class="btn-inspect" onclick="inspectUser('${p.email}', ${p.balance}, ${p.is_private})">🔍 Inspect</button>
+                                        ${!isSelf ? `<button class="btn-pay" onclick="payTargetUser('${p.email}')">⚡ Send</button>` : ''}
+                                    </div>
+                                </div>
+                            `;
+                        }).join("");
+                    } else {
+                        peerGrid.innerHTML = '<div style="grid-column: 1 / -1; text-align: center;">No peer users found.</div>';
+                    }
+                }
+            } catch (err) {}
+        }
+
+        function inspectUser(email, balance, isPrivate) {
+            document.getElementById("modalUserEmail").textContent = "🔍 Inspector: " + email;
+            document.getElementById("modalUserBalance").textContent = isPrivate ? "🔒 Hidden (User set visibility to Private)" : balance.toFixed(2) + " BFG";
+
+            const userTxs = globalTxs.filter(t => 
+                t.from.toLowerCase() === email.toLowerCase() || t.to.toLowerCase() === email.toLowerCase()
+            );
+
+            const txBody = document.getElementById("modalTxBody");
+            if (userTxs.length === 0) {
+                txBody.innerHTML = '<tr><td colspan="4" style="padding: 10px; text-align: center;">No activity recorded for this wallet.</td></tr>';
+            } else {
+                txBody.innerHTML = userTxs.map(t => {
+                    const isSent = t.from.toLowerCase() === email.toLowerCase();
+                    const typeLabel = isSent ? '<span style="color:#e74c3c;">SENT</span>' : '<span style="color:#2ecc71;">RECEIVED</span>';
+                    const counterparty = isSent ? t.to : t.from;
+                    return `
+                        <tr style="border-bottom: 1px solid rgba(255,255,255,0.05);">
+                            <td style="padding: 8px;">${typeLabel}</td>
+                            <td style="padding: 8px;">${counterparty}</td>
+                            <td style="padding: 8px; font-weight: bold; color: ${isSent ? '#e74c3c' : '#2ecc71'}">${isSent ? '-' : '+'}${t.amount} BFG</td>
+                            <td style="padding: 8px; opacity: 0.7;">${t.time}</td>
+                        </tr>
+                    `;
+                }).join("");
+            }
+
+            document.getElementById("inspectModal").classList.add("active");
+        }
+
+        function closeModal() {
+            document.getElementById("inspectModal").classList.remove("active");
+        }
+
+        function payTargetUser(email) {
+            localStorage.setItem("selectedPayTarget", email);
+            window.location.href = "transactions.html";
+        }
+
+        document.addEventListener("DOMContentLoaded", () => {
+            loadPeersDirectory();
+            setInterval(loadPeersDirectory, 3000);
+        });
+    </script>
+</body>
+</html>'''
+
+with open("html/network.html", "w") as f:
+    f.write(net_html)
+print("html/network.html updated!")

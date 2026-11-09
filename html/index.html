@@ -1,118 +1,73 @@
-<!doctype html>
-<html>
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width,initial-scale=1" />
-    <title>Dashboard • BitForge</title>
-    <link rel="stylesheet" href="../style.css" />
-  </head>
-  <body>
-    <header>
-      <div class="container nav">
-        <a class="brand" href="index.html">Bit<span>Forge</span></a>
-        <nav>
-          <a class="active" href="index.html">Dashboard</a
-          ><a href="wallet.html">Wallet</a
-          ><a href="transactions.html">Transactions</a
-          ><a href="mining.html">Mining</a
-          ><a href="blockchain.html">Blockchain</a
-          ><a href="network.html">Network</a>
-        </nav>
-        <div class="nav-user">
-          <span class="avatar">B</span><span data-user>Bhanu</span>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BitForge - Central Dashboard</title>
+    <link rel="stylesheet" href="../style.css">
+    <style>
+        .grid-3 { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; margin-top: 20px; }
+        .stat-card { border: 1px solid #00d2ff; padding: 20px; border-radius: 10px; background: rgba(0, 210, 255, 0.05); position: relative; }
+        .action-btn { display: inline-block; padding: 10px 20px; background: #00d2ff; color: #000; font-weight: bold; text-decoration: none; border-radius: 5px; margin-top: 10px; }
+        .toggle-btn { padding: 8px 16px; background: #34495e; color: #fff; border: 1px solid #00d2ff; font-weight: bold; cursor: pointer; border-radius: 5px; font-size: 0.85rem; margin-top: 10px; display: inline-block; }
+    </style>
+</head>
+<body>
+    <nav>
+        <a href="index.html" class="active">Dashboard</a>
+        <a href="wallet.html">Wallet</a>
+        <a href="transactions.html">Transactions / Pay</a>
+        <a href="mining.html">Mining</a>
+        <a href="blockchain.html">Ledger</a>
+        <a href="network.html">Network</a>
+        <button onclick="logout()" style="background: #e74c3c; padding: 5px 15px; border: none; cursor: pointer;">Logout</button>
+    </nav>
+
+    <div class="container" style="padding: 20px;">
+        <h2>Welcome to BitForge Platform</h2>
+        <p>Logged in as: <strong data-user style="color: #00d2ff;">Loading...</strong></p>
+
+        <div class="grid-3">
+            <div class="stat-card">
+                <h3>Available Balance</h3>
+                <h1 style="color: #2ecc71;"><span id="userBalance">0.00</span> BFG</h1>
+                
+                <div>
+                    <button id="visibilityBtn" class="toggle-btn" onclick="window.toggleBalanceVisibility()">👁️ Visibility: Public</button>
+                </div>
+                
+                <a href="transactions.html" class="action-btn">Send & Receive Coins</a>
+            </div>
+
+            <div class="stat-card">
+                <h3>Proof-of-Work Mining</h3>
+                <p>Dynamic hardware-tier block rewards ready.</p>
+                <a href="mining.html" class="action-btn" style="background: #27ae60; color: #fff;">⚡ Mine Blocks Now</a>
+            </div>
+
+            <div class="stat-card">
+                <h3>Immutable Blockchain</h3>
+                <p>Total Mined Blocks: <strong data-blocks style="color: #00d2ff;">1</strong></p>
+                <a href="blockchain.html" class="action-btn" style="background: #8e44ad; color: #fff;">Explore Blockchain Ledger</a>
+            </div>
         </div>
-      </div>
-    </header>
-    <main>
-      <div class="container">
-        <section class="hero">
-          <div>
-            <div class="eyebrow">Overview</div>
-            <h1>Good morning, <span data-user>Bhanu</span></h1>
-            <p>
-              Track your wallet, transactions and simulated blockchain network.
-            </p>
-          </div>
-          <a class="btn" href="wallet.html">+ New Transaction</a>
-        </section>
-        <div class="grid">
-          <div class="card kpi">
-            <div class="kpi-icon">◈</div>
-            <div class="label">Wallet Balance</div>
-            <div class="balance">
-              2,450 <span style="font-size: 14px">BFG</span>
-            </div>
-            <div class="small">Available demo balance</div>
-          </div>
-          <div class="card kpi">
-            <div class="kpi-icon">▦</div>
-            <div class="label">Blockchain Height</div>
-            <div class="balance">#<span data-blocks>1</span></div>
-            <div class="small">Blocks in blockchain</div>
-          </div>
-          <div class="card kpi">
-            <div class="kpi-icon">●</div>
-            <div class="label">Network Status</div>
-            <div class="balance good">Online</div>
-            <div class="small">4 connected nodes</div>
-          </div>
-        </div>
-        <div class="grid two" style="margin-top: 16px">
-          <div class="card">
-            <div class="card-title">
-              <h2>Network Activity</h2>
-              <span class="badge">Live</span>
-            </div>
-            <div class="small">Simulated block activity</div>
-            <div class="mini-chart">
-              <span class="bar"></span><span class="bar"></span
-              ><span class="bar"></span><span class="bar"></span
-              ><span class="bar"></span><span class="bar"></span
-              ><span class="bar"></span>
-            </div>
-          </div>
-          <div class="card">
-            <div class="card-title"><h2>Quick Actions</h2></div>
-            <div class="actions">
-              <a class="btn" href="wallet.html">Send BFG</a
-              ><a class="btn secondary" href="mining.html">Mine Block</a
-              ><a class="btn secondary" href="blockchain.html">Explore Chain</a>
-            </div>
-          </div>
-        </div>
-        <div class="grid two" style="margin-top: 16px">
-          <div class="card">
-            <div class="card-title"><h2>How BitForge works</h2></div>
-            <div class="timeline">
-              <div class="step">
-                <strong>1. Create transaction</strong>
-                <p>Choose a receiver and amount from your wallet.</p>
-              </div>
-              <div class="step">
-                <strong>2. Mine a block</strong>
-                <p>Package the transaction into a simulated block.</p>
-              </div>
-              <div class="step">
-                <strong>3. Validate the chain</strong>
-                <p>Inspect hashes and see how blocks link together.</p>
-              </div>
-            </div>
-          </div>
-          <div class="card">
-            <div class="card-title"><h2>System</h2></div>
-            <div class="stat">
-              <span>Consensus</span><strong>Proof of Work</strong>
-            </div>
-            <div class="stat"><span>Currency</span><strong>BFG</strong></div>
-            <div class="stat"><span>Backend</span><strong>None</strong></div>
-            <div class="stat">
-              <span>Purpose</span><strong>Education</strong>
-            </div>
-          </div>
-        </div>
-      </div>
-    </main>
-    <footer>BitForge • BitForge Blockchain</footer>
+
+        <h3 style="margin-top: 40px;">Recent Ecosystem Activity</h3>
+        <table style="width: 100%; border-collapse: collapse; margin-top: 10px;">
+            <thead>
+                <tr style="border-bottom: 2px solid #00d2ff; text-align: left;">
+                    <th style="padding: 10px;">Sender</th>
+                    <th style="padding: 10px;">Receiver</th>
+                    <th style="padding: 10px;">Amount</th>
+                    <th style="padding: 10px;">Timestamp</th>
+                </tr>
+            </thead>
+            <tbody id="txBody">
+                <tr><td colspan="4" style="padding: 15px; text-align: center;">Loading activity...</td></tr>
+            </tbody>
+        </table>
+    </div>
+
     <script src="../script.js"></script>
-  </body>
+</body>
 </html>

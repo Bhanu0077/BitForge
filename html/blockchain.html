@@ -10,11 +10,11 @@
     <nav>
         <a href="index.html">Dashboard</a>
         <a href="wallet.html">Wallet</a>
-        <a href="transactions.html">Transactions / Pay</a>
+        <a href="transactions.html">Payments</a>
         <a href="mining.html">Mining</a>
         <a href="blockchain.html" class="active">Ledger</a>
         <a href="network.html">Network</a>
-        <button onclick="logout()" style="background: #e74c3c; padding: 5px 15px; border: none; cursor: pointer;">Logout</button>
+        <button onclick="logout()" style="background: var(--danger-red); padding: 5px 15px; border: none; cursor: pointer;">Logout</button>
     </nav>
 
     <div class="container" style="padding: 20px;">
@@ -22,7 +22,7 @@
         <p style="margin-bottom: 20px;">Live, cryptographic chain of mined blocks stored in MySQL database:</p>
 
         <div id="blocksContainer">
-            <div style="text-align: center; padding: 30px; color: #00d2ff; font-weight: bold;">Loading ledger blocks...</div>
+            <div style="text-align: center; padding: 30px; color: var(--accent-primary); font-weight: bold;">Loading ledger blocks...</div>
         </div>
     </div>
 
@@ -39,14 +39,14 @@
                         container.innerHTML = '<div style="text-align: center; padding: 20px;">No blocks recorded in ledger.</div>';
                     } else {
                         container.innerHTML = data.blocks.map(b => `
-                            <div style="border: 1px solid #00d2ff; padding: 20px; margin-bottom: 18px; border-radius: 12px; background: rgba(0, 210, 255, 0.04);">
-                                <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid rgba(0,210,255,0.2); padding-bottom: 10px;">
-                                    <strong style="color: #00d2ff; font-size: 1.15rem;">Block #${b.index}</strong>
-                                    <span style="background: #27ae60; color: #fff; padding: 4px 12px; border-radius: 5px; font-weight: bold; font-size: 0.8rem;">● Validated Hash</span>
+                            <div class="card-panel" style="margin-bottom: 18px;">
+                                <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border-subtle); padding-bottom: 10px;">
+                                    <strong style="color: var(--accent-primary); font-size: 1.15rem;">Block #${b.index}</strong>
+                                    <span class="badge">Validated hash</span>
                                 </div>
                                 <div style="font-size: 0.85rem; opacity: 0.8; margin-top: 12px;"><strong>Previous Hash:</strong> <span style="font-family: monospace;">${b.prev}</span></div>
-                                <div style="font-family: monospace; color: #00d2ff; margin: 8px 0; word-break: break-all;"><strong>Current Block Hash:</strong> ${b.hash}</div>
-                                <div style="margin-top: 8px;"><span>Payload / Transaction Data: </span><strong style="color: #2ecc71;">${b.data}</strong></div>
+                                <div style="font-family: monospace; color: var(--accent-primary); margin: 8px 0; word-break: break-all;"><strong>Current Block Hash:</strong> ${b.hash}</div>
+                                <div style="margin-top: 8px;"><span>Payload / Transaction Data: </span><strong style="color: var(--accent-emerald);">${b.data}</strong></div>
                                 <div style="font-size: 0.8rem; opacity: 0.6; margin-top: 10px;">Nonce: ${b.nonce} | Timestamp: ${b.time}</div>
                             </div>
                         `).join("");

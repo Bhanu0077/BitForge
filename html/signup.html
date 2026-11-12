@@ -7,39 +7,39 @@
     <link rel="stylesheet" href="../style.css">
     <style>
         .input-group { position: relative; width: 100%; }
-        .eye-btn { position: absolute; right: 10px; top: 50%; transform: translateY(-50%); background: none; border: none; cursor: pointer; font-size: 1.1rem; color: #94a3b8; }
+        .eye-btn { position: absolute; right: 10px; top: 50%; transform: translateY(-50%); background: none; border: none; cursor: pointer; font-size: 1.1rem; color: var(--text-secondary); }
     </style>
 </head>
-<body style="display: flex; justify-content: center; align-items: center; min-height: 100vh; background: #0f172a; padding: 20px 0;">
-    <div style="background: #1e293b; padding: 30px; border-radius: 12px; border: 1px solid #00d2ff; width: 90%; max-width: 420px; text-align: center;">
-        <h2 style="color: #00d2ff; margin-bottom: 10px;">Join BitForge</h2>
+<body style="display: flex; justify-content: center; align-items: center; min-height: 100vh; background: var(--bg-base); padding: 20px 0;">
+    <div style="background: var(--bg-surface); padding: 30px; border-radius: 12px; border: 1px solid var(--accent-primary); width: 90%; max-width: 420px; text-align: center;">
+        <h2 style="color: var(--accent-primary); margin-bottom: 10px;">Join BitForge</h2>
         <p style="font-size: 0.9rem; opacity: 0.8; margin-bottom: 20px;">Register a multi-user blockchain wallet</p>
 
         <form onsubmit="handleSignup(event)">
             <div style="margin-bottom: 12px; text-align: left;">
-                <label style="font-size: 0.85rem; color: #94a3b8;">Choose Username</label>
-                <input type="text" id="signupUsername" required placeholder="e.g. kala" style="width: 100%; padding: 10px; border-radius: 6px; border: 1px solid #334155; background: #0f172a; color: #fff; margin-top: 4px;">
+                <label style="font-size: 0.85rem; color: var(--text-secondary);">Choose Username</label>
+                <input type="text" id="signupUsername" required placeholder="e.g. john" style="width: 100%; padding: 10px; border-radius: 6px; border: 1px solid var(--border-subtle); background: var(--bg-base); color: var(--text-primary); margin-top: 4px;">
             </div>
 
             <div style="margin-bottom: 12px; text-align: left;">
-                <label style="font-size: 0.85rem; color: #94a3b8;">Password</label>
+                <label style="font-size: 0.85rem; color: var(--text-secondary);">Password</label>
                 <div class="input-group">
-                    <input type="password" id="signupPassword" required placeholder="••••••••" style="width: 100%; padding: 10px 40px 10px 10px; border-radius: 6px; border: 1px solid #334155; background: #0f172a; color: #fff; margin-top: 4px;">
-                    <button type="button" class="eye-btn" onclick="togglePasswordVisibility('signupPassword', this)">👁️</button>
+                    <input type="password" id="signupPassword" required placeholder="••••••••" style="width: 100%; padding: 10px 40px 10px 10px; border-radius: 6px; border: 1px solid var(--border-subtle); background: var(--bg-base); color: var(--text-primary); margin-top: 4px;">
+                    <button type="button" class="eye-btn" aria-label="Show password" title="Show password" onclick="togglePasswordVisibility('signupPassword', this)"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M2 12s3.5-6 10-6 10 6 10 6-3.5 6-10 6S2 12 2 12Z"/><circle cx="12" cy="12" r="2.5"/></svg></button>
                 </div>
             </div>
 
             <div style="margin-bottom: 12px; text-align: left;">
-                <label style="font-size: 0.85rem; color: #94a3b8;">Confirm Password</label>
+                <label style="font-size: 0.85rem; color: var(--text-secondary);">Confirm Password</label>
                 <div class="input-group">
-                    <input type="password" id="signupConfirm" required placeholder="••••••••" style="width: 100%; padding: 10px 40px 10px 10px; border-radius: 6px; border: 1px solid #334155; background: #0f172a; color: #fff; margin-top: 4px;">
-                    <button type="button" class="eye-btn" onclick="togglePasswordVisibility('signupConfirm', this)">👁️</button>
+                    <input type="password" id="signupConfirm" required placeholder="••••••••" style="width: 100%; padding: 10px 40px 10px 10px; border-radius: 6px; border: 1px solid var(--border-subtle); background: var(--bg-base); color: var(--text-primary); margin-top: 4px;">
+                    <button type="button" class="eye-btn" aria-label="Show password" title="Show password" onclick="togglePasswordVisibility('signupConfirm', this)"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M2 12s3.5-6 10-6 10 6 10 6-3.5 6-10 6S2 12 2 12Z"/><circle cx="12" cy="12" r="2.5"/></svg></button>
                 </div>
             </div>
 
             <div style="margin-bottom: 12px; text-align: left;">
-                <label style="font-size: 0.85rem; color: #94a3b8;">Security Recovery Question</label>
-                <select id="secretQuestion" style="width: 100%; padding: 10px; border-radius: 6px; border: 1px solid #334155; background: #0f172a; color: #fff; margin-top: 4px;">
+                <label style="font-size: 0.85rem; color: var(--text-secondary);">Security Recovery Question</label>
+                <select id="secretQuestion" style="width: 100%; padding: 10px; border-radius: 6px; border: 1px solid var(--border-subtle); background: var(--bg-base); color: var(--text-primary); margin-top: 4px;">
                     <option value="pet">What is the name of your first pet?</option>
                     <option value="city">What city were you born in?</option>
                     <option value="school">What was your first school?</option>
@@ -47,17 +47,17 @@
             </div>
 
             <div style="margin-bottom: 20px; text-align: left;">
-                <label style="font-size: 0.85rem; color: #94a3b8;">Security Secret Answer</label>
-                <input type="text" id="secretAnswer" required placeholder="Your answer..." style="width: 100%; padding: 10px; border-radius: 6px; border: 1px solid #334155; background: #0f172a; color: #fff; margin-top: 4px;">
+                <label style="font-size: 0.85rem; color: var(--text-secondary);">Security Secret Answer</label>
+                <input type="text" id="secretAnswer" required placeholder="Your answer..." style="width: 100%; padding: 10px; border-radius: 6px; border: 1px solid var(--border-subtle); background: var(--bg-base); color: var(--text-primary); margin-top: 4px;">
             </div>
 
-            <button type="submit" style="width: 100%; padding: 12px; background: #00d2ff; color: #000; font-weight: bold; border: none; border-radius: 6px; cursor: pointer; font-size: 1rem;">Create Account (+100 BFG)</button>
+            <button type="submit" style="width: 100%; padding: 12px; background: var(--accent-primary); color: #ffffff; font-weight: bold; border: none; border-radius: 6px; cursor: pointer; font-size: 1rem;">Create Account (+100 BFG)</button>
         </form>
 
         <div id="message" style="margin-top: 15px; font-size: 0.9rem; font-weight: bold;"></div>
 
         <div style="margin-top: 20px; font-size: 0.85rem;">
-            <a href="login.html" style="color: #00d2ff; text-decoration: none;">Already have an account? Login</a>
+            <a href="login.html" style="color: var(--accent-primary); text-decoration: none;">Already have an account? Login</a>
         </div>
     </div>
 

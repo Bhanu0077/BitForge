@@ -7,37 +7,34 @@
     <link rel="stylesheet" href="../style.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html5-qrcode/2.3.8/html5-qrcode.min.js"></script>
     <style>
-        .pay-card { border: 1px solid #00d2ff; padding: 20px; border-radius: 12px; margin-bottom: 20px; background: rgba(0, 210, 255, 0.05); display: flex; justify-content: space-between; align-items: center; }
+        .pay-card { border: 1px solid var(--border-subtle); padding: 20px; border-radius: 10px; margin-bottom: 20px; background: var(--bg-surface); display: flex; justify-content: space-between; align-items: center; }
         .contact-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(100px, 1fr)); gap: 15px; margin: 15px 0 25px 0; }
-        .contact-avatar { display: flex; flex-direction: column; align-items: center; cursor: pointer; padding: 12px; border-radius: 12px; background: #1e1e1e; border: 2px solid transparent; transition: all 0.2s; }
-        .contact-avatar:hover, .contact-avatar.selected { border-color: #00d2ff; background: rgba(0, 210, 255, 0.15); transform: translateY(-2px); }
-        .avatar-circle { width: 50px; height: 50px; border-radius: 50%; background: linear-gradient(135deg, #00d2ff, #9b59b6); display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 1.3rem; color: #fff; margin-bottom: 8px; text-transform: uppercase; }
+        .contact-avatar { display: flex; flex-direction: column; align-items: center; cursor: pointer; padding: 12px; border-radius: 8px; background: var(--bg-surface); border: 1px solid transparent; transition: border-color .16s ease, transform .16s ease; }
+        .contact-avatar:hover, .contact-avatar.selected { border-color: var(--border-strong); background: var(--bg-surface-hover); transform: translateY(-1px); }
+        .avatar-circle { width: 40px; height: 40px; border-radius: 7px; background: #1e293b; display: flex; align-items: center; justify-content: center; font-weight: 600; font-size: 1rem; color: var(--accent-emerald); margin-bottom: 8px; text-transform: uppercase; font-family: var(--font-mono); }
         .contact-name { font-size: 0.85rem; font-weight: bold; text-align: center; word-break: break-all; opacity: 0.9; }
-        .tab-btn { padding: 10px 20px; background: #1e1e1e; color: #fff; border: 1px solid #00d2ff; cursor: pointer; border-radius: 5px; font-weight: bold; }
-        .tab-btn.active { background: #00d2ff; color: #000; }
+        .tab-btn { padding: 10px 14px; }
+        .tab-btn.active { background: #e2e8f0; color: #0b0f19 !important; border-color: #e2e8f0; }
         .tab-content { display: none; margin-top: 15px; }
         .tab-content.active { display: block; }
         
-        .btn-history { padding: 12px 24px; background: #8e44ad; color: #fff; font-weight: bold; border: none; cursor: pointer; border-radius: 6px; font-size: 0.95rem; }
-        .btn-history:hover { background: #9b59b6; }
+        .btn-history { padding: 10px 14px; }
 
-        .qr-scanner-wrapper { border: 2px dashed #00d2ff; padding: 20px; text-align: center; border-radius: 12px; background: rgba(0, 210, 255, 0.02); }
+        .qr-scanner-wrapper { border: 1px dashed var(--border-strong); padding: 20px; text-align: center; border-radius: 10px; background: var(--bg-surface); }
         #qr-reader { width: 100%; max-width: 400px; margin: 15px auto; border-radius: 8px; overflow: hidden; min-height: 250px; background: #000; }
 
-        .modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); justify-content: center; align-items: center; z-index: 1000; }
-        .modal-overlay.active { display: flex; }
-        .modal-card { background: #1e1e1e; border: 2px solid #00d2ff; padding: 25px; border-radius: 16px; width: 90%; max-width: 420px; box-shadow: 0 0 25px rgba(0,210,255,0.3); }
+        .modal-card { max-width: 420px; }
     </style>
 </head>
 <body>
     <nav>
         <a href="index.html">Dashboard</a>
         <a href="wallet.html">Wallet</a>
-        <a href="transactions.html" class="active">Transactions / Pay</a>
+        <a href="transactions.html" class="active">Payments</a>
         <a href="mining.html">Mining</a>
         <a href="blockchain.html">Ledger</a>
         <a href="network.html">Network</a>
-        <button onclick="logout()" style="background: #e74c3c; padding: 5px 15px; border: none; cursor: pointer;">Logout</button>
+        <button onclick="logout()" style="background: var(--danger-red); padding: 5px 15px; border: none; cursor: pointer;">Logout</button>
     </nav>
 
     <div class="container" style="padding: 20px;">
@@ -45,11 +42,11 @@
 
         <div class="pay-card">
             <div>
-                <p><strong>Logged in as:</strong> <span data-user style="color: #00d2ff; font-weight: bold;">Loading...</span></p>
-                <p><strong>Available Balance:</strong> <span id="userBalance" style="color: #2ecc71; font-size: 1.6rem; font-weight: bold;">0.00</span> BFG</p>
+                <p><strong>Logged in as:</strong> <span data-user style="color: var(--accent-primary); font-weight: bold;">Loading...</span></p>
+                <p><strong>Available Balance:</strong> <span id="userBalance" style="color: var(--accent-emerald); font-size: 1.6rem; font-weight: bold;">0.00</span> BFG</p>
             </div>
             <div>
-                <button class="btn-history" onclick="openHistoryModal()">📜 My Transaction History</button>
+                <button class="btn-history" onclick="openHistoryModal()">Transaction history</button>
             </div>
         </div>
 
@@ -63,26 +60,26 @@
         <!-- Payment Mode Tabs -->
         <div style="display: flex; gap: 10px;">
             <button class="tab-btn active" onclick="switchPayTab('standard', this)">Direct Payment</button>
-            <button class="tab-btn" id="qrTabBtn" onclick="switchPayTab('qr', this)">📷 Live QR Scan & Pay</button>
+            <button class="tab-btn" id="qrTabBtn" onclick="switchPayTab('qr', this)">Live QR Scan & Pay</button>
         </div>
 
         <!-- 1. Direct Transfer Form -->
         <div id="tab-standard" class="tab-content active">
-            <form onsubmit="sendCoins(event)" style="border: 1px solid rgba(255,255,255,0.1); padding: 20px; border-radius: 8px;">
+            <form onsubmit="sendCoins(event)" style="border: 1px solid var(--border-subtle); padding: 20px; border-radius: 8px;">
                 <label>Receiver Username</label>
                 <input type="text" id="receiver" required placeholder="Select a contact above or type username..." style="width: 100%; margin-bottom: 15px; padding: 10px;">
                 
                 <label>Amount to Send (BFG)</label>
                 <input type="number" step="0.01" min="0.01" id="amount" required placeholder="10.00" style="width: 100%; margin-bottom: 20px; padding: 10px;">
                 
-                <button type="submit" style="width: 100%; padding: 14px; background: #00d2ff; color: #000; font-weight: bold; border: none; cursor: pointer; border-radius: 6px; font-size: 1rem;">⚡ Send BFG Now</button>
+                <button type="submit" style="width: 100%; padding: 14px; background: var(--accent-primary); color: #ffffff; font-weight: bold; border: none; cursor: pointer; border-radius: 6px; font-size: 1rem;">Send BFG Now</button>
             </form>
         </div>
 
         <!-- 2. Live Webcam Scanner Tab -->
         <div id="tab-qr" class="tab-content">
             <div class="qr-scanner-wrapper">
-                <h3>📷 Live Camera QR Scanner</h3>
+                <h3>Live Camera QR Scanner</h3>
                 <p style="font-size: 0.9rem; opacity: 0.8; margin-bottom: 10px;">Point your camera at a wallet QR code:</p>
                 <div id="qr-reader"></div>
             </div>
@@ -93,7 +90,7 @@
         <h3 style="margin-top: 35px;">Live Network Ledger</h3>
         <table style="width: 100%; border-collapse: collapse; margin-top: 10px;">
             <thead>
-                <tr style="border-bottom: 2px solid #00d2ff; text-align: left;">
+                <tr style="border-bottom: 2px solid var(--accent-primary); text-align: left;">
                     <th style="padding: 10px;">Sender</th>
                     <th style="padding: 10px;">Receiver</th>
                     <th style="padding: 10px;">Amount</th>
@@ -109,21 +106,21 @@
     <!-- CLEAN QR PAYMENT MODAL -->
     <div class="modal-overlay" id="qrPayModal">
         <div class="modal-card">
-            <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #00d2ff; padding-bottom: 10px; margin-bottom: 15px;">
-                <h3 style="margin: 0; color: #00d2ff;">⚡ Complete QR Transfer</h3>
-                <button onclick="closeQRPayModal()" style="background: #e74c3c; color: #fff; border: none; padding: 5px 10px; cursor: pointer; border-radius: 4px; font-weight: bold;">✕ Cancel</button>
+            <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--accent-primary); padding-bottom: 10px; margin-bottom: 15px;">
+                <h3 style="margin: 0; color: var(--accent-primary);">Complete QR Transfer</h3>
+                <button onclick="closeQRPayModal()" style="background: var(--danger-red); color: var(--text-primary); border: none; padding: 5px 10px; cursor: pointer; border-radius: 4px; font-weight: bold;">Cancel</button>
             </div>
 
-            <div style="background: rgba(0,210,255,0.08); padding: 15px; border-radius: 8px; border: 1px solid rgba(0,210,255,0.2); margin-bottom: 20px; text-align: center;">
+            <div style="background: var(--bg-base); padding: 15px; border-radius: 8px; border: 1px solid var(--border-subtle); margin-bottom: 20px; text-align: center;">
                 <span style="font-size: 0.85rem; opacity: 0.7; display: block; margin-bottom: 4px;">Paying Recipient:</span>
-                <strong id="modalTargetUser" style="color: #2ecc71; font-size: 1.15rem; word-break: break-all;">user@example.com</strong>
+                <strong id="modalTargetUser" style="color: var(--accent-emerald); font-size: 1.15rem; word-break: break-all;">user@example.com</strong>
             </div>
 
             <form onsubmit="submitQRPopupPayment(event)">
                 <label style="display: block; margin-bottom: 8px; font-weight: bold;">Amount to Send (BFG):</label>
-                <input type="number" step="0.01" min="0.01" id="popupAmount" required placeholder="e.g. 50.00" autofocus style="width: 100%; padding: 12px; border-radius: 6px; border: 1px solid #00d2ff; background: #0f172a; color: #fff; font-size: 1.1rem; margin-bottom: 20px;">
+                <input type="number" step="0.01" min="0.01" id="popupAmount" required placeholder="e.g. 50.00" autofocus style="width: 100%; padding: 12px; border-radius: 6px; border: 1px solid var(--accent-primary); background: var(--bg-base); color: var(--text-primary); font-size: 1.1rem; margin-bottom: 20px;">
 
-                <button type="submit" style="width: 100%; padding: 14px; background: #2ecc71; color: #fff; font-weight: bold; border: none; cursor: pointer; border-radius: 6px; font-size: 1.05rem;">⚡ Send BFG</button>
+                <button type="submit" style="width: 100%; padding: 14px; background: var(--accent-emerald); color: var(--text-primary); font-weight: bold; border: none; cursor: pointer; border-radius: 6px; font-size: 1.05rem;">Send BFG</button>
             </form>
         </div>
     </div>
@@ -131,14 +128,14 @@
     <!-- Personal History Modal -->
     <div class="modal-overlay" id="historyModal">
         <div class="modal-card" style="max-width: 650px;">
-            <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #00d2ff; padding-bottom: 10px;">
-                <h3 style="margin: 0; color: #00d2ff;">📜 My Personal Transaction History</h3>
-                <button onclick="closeHistoryModal()" style="background: #e74c3c; color: #fff; border: none; padding: 5px 10px; cursor: pointer; border-radius: 4px; font-weight: bold;">✕ Close</button>
+            <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--accent-primary); padding-bottom: 10px;">
+                <h3 style="margin: 0; color: var(--accent-primary);">Personal transaction history</h3>
+                <button onclick="closeHistoryModal()" style="background: var(--danger-red); color: var(--text-primary); border: none; padding: 5px 10px; cursor: pointer; border-radius: 4px; font-weight: bold;">Close</button>
             </div>
 
             <table style="width: 100%; border-collapse: collapse; margin-top: 15px; font-size: 0.9rem;">
                 <thead>
-                    <tr style="border-bottom: 1px solid #00d2ff; text-align: left;">
+                    <tr style="border-bottom: 1px solid var(--accent-primary); text-align: left;">
                         <th style="padding: 8px;">Type</th>
                         <th style="padding: 8px;">Counterparty</th>
                         <th style="padding: 8px;">Amount</th>
@@ -222,7 +219,7 @@
             }
         }
 
-        function submitQRPopupPayment(event) {
+        async function submitQRPopupPayment(event) {
             if (event) event.preventDefault();
             const amountInput = document.getElementById("popupAmount");
             const amount = Number(amountInput ? amountInput.value : 0);
@@ -232,8 +229,8 @@
                 return false;
             }
 
-            closeQRPayModal();
-            window.executePayment(scannedTargetEmail, amount);
+            const sent = await window.executePayment(scannedTargetEmail, amount);
+            if (sent) closeQRPayModal();
             return false;
         }
 
@@ -244,7 +241,7 @@
         }
 
         async function openHistoryModal() {
-            const user = localStorage.getItem("bitforgeUser") || "bhanu@gmail.com";
+            const user = localStorage.getItem("bitforgeUser") || "john";
             document.getElementById("historyModal").classList.add("active");
             
             try {
@@ -262,13 +259,13 @@
                     } else {
                         historyBody.innerHTML = myTxs.map(t => {
                             const isSent = t.from.toLowerCase() === user.toLowerCase();
-                            const typeBadge = isSent ? '<span style="color:#e74c3c; font-weight:bold;">SENT</span>' : '<span style="color:#2ecc71; font-weight:bold;">RECEIVED</span>';
+                            const typeBadge = isSent ? '<span style="color:var(--danger-red); font-weight:bold;">SENT</span>' : '<span style="color:var(--accent-emerald); font-weight:bold;">RECEIVED</span>';
                             const party = isSent ? t.to : t.from;
                             return `
-                                <tr style="border-bottom: 1px solid rgba(255,255,255,0.05);">
+                                <tr style="border-bottom: 1px solid var(--border-subtle);">
                                     <td style="padding: 10px;">${typeBadge}</td>
                                     <td style="padding: 10px;">${party}</td>
-                                    <td style="padding: 10px; font-weight: bold; color: ${isSent ? '#e74c3c' : '#2ecc71'};">${isSent ? '-' : '+'}${t.amount} BFG</td>
+                                    <td style="padding: 10px; font-weight: bold; color: ${isSent ? 'var(--danger-red)' : 'var(--accent-emerald)'};">${isSent ? '-' : '+'}${t.amount} BFG</td>
                                     <td style="padding: 10px; opacity: 0.7;">${t.time}</td>
                                 </tr>
                             `;

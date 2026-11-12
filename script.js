@@ -14,14 +14,9 @@ function showToast(message, type = "info") {
     const toast = document.createElement("div");
     toast.className = `toast ${type}`;
     
-    let icon = "🔔";
-    if (type === "success") icon = "✅";
-    if (type === "received") icon = "💰";
-    if (type === "error") icon = "⚠️";
-
     toast.innerHTML = `
-        <div><strong>${icon} Notification:</strong> ${message}</div>
-        <button class="toast-close" onclick="this.parentElement.remove()">✕</button>
+        <div><strong>Notification</strong> · ${message}</div>
+        <button class="toast-close" aria-label="Dismiss notification" onclick="this.parentElement.remove()">×</button>
     `;
 
     container.appendChild(toast);
@@ -78,19 +73,25 @@ function showMessage(text, isError = false) {
     const box = document.getElementById("message") || document.getElementById("authMessage");
     if (box) {
         box.textContent = text;
-        box.style.color = isError ? "#e74c3c" : "#2ecc71";
+        box.style.color = isError ? "var(--danger-red)" : "var(--accent-emerald)";
     }
 }
 
 window.togglePasswordVisibility = function(inputId, btn) {
     const input = document.getElementById(inputId);
     if (!input) return;
+    const eyeIcon = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M2 12s3.5-6 10-6 10 6 10 6-3.5 6-10 6S2 12 2 12Z"/><circle cx="12" cy="12" r="2.5"/></svg>';
+    const hiddenEyeIcon = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 3l18 18"/><path d="M10.6 6.2A10.4 10.4 0 0 1 12 6c6.5 0 10 6 10 6a18.8 18.8 0 0 1-3.1 3.7M6.3 6.3C3.6 8.1 2 12 2 12s3.5 6 10 6a10.4 10.4 0 0 0 4.1-.8"/><circle cx="12" cy="12" r="2.5"/></svg>';
     if (input.type === "password") {
         input.type = "text";
-        btn.textContent = "🙈";
+        btn.innerHTML = hiddenEyeIcon;
+        btn.setAttribute("aria-label", "Hide password");
+        btn.title = "Hide password";
     } else {
         input.type = "password";
-        btn.textContent = "👁️";
+        btn.innerHTML = eyeIcon;
+        btn.setAttribute("aria-label", "Show password");
+        btn.title = "Show password";
     }
 };
 
@@ -191,11 +192,13 @@ async function fetchEcosystemData() {
             balEl.textContent = userData.balance.toFixed(2);
             if (visBtn) {
                 if (userData.is_private) {
-                    visBtn.textContent = "🔒 Visibility: Private";
-                    visBtn.style.background = "#e74c3c";
+                    visBtn.textContent = "Visibility: Private";
+                    visBtn.style.background = "rgba(251, 113, 133, .12)";
+                    visBtn.style.borderColor = "var(--danger-red)";
                 } else {
-                    visBtn.textContent = "👁️ Visibility: Public";
-                    visBtn.style.background = "#34495e";
+                    visBtn.textContent = "Visibility: Public";
+                    visBtn.style.background = "transparent";
+                    visBtn.style.borderColor = "var(--border-strong)";
                 }
             }
         }
@@ -208,7 +211,7 @@ async function fetchEcosystemData() {
                 const latestTx = data.transactions[0];
                 if (latestTx.to.toLowerCase() === currentUser.toLowerCase() && latestTx.from.toLowerCase() !== currentUser.toLowerCase()) {
                     showToast(`You just received +${latestTx.amount} BFG from ${latestTx.from}!`, "received");
-                    triggerSystemNotification("💰 BFG Received!", `You just received +${latestTx.amount} BFG from ${latestTx.from}!`);
+                    triggerSystemNotification("BFG Received!", `You just received +${latestTx.amount} BFG from ${latestTx.from}!`);
                 }
             }
             lastKnownTxCount = data.transactions.length;
@@ -238,10 +241,10 @@ async function fetchEcosystemData() {
                 txBody.innerHTML = '<tr><td colspan="4" style="padding: 15px; text-align: center;">No transactions recorded yet.</td></tr>';
             } else {
                 txBody.innerHTML = data.transactions.map(t =>
-                    `<tr style="border-bottom: 1px solid rgba(255,255,255,0.1);">
+                    `<tr style="border-bottom: 1px solid var(--border-subtle);">
                         <td style="padding: 10px;"><strong>${t.from}</strong></td>
                         <td style="padding: 10px;">${t.to}</td>
-                        <td style="padding: 10px; color: #00d2ff; font-weight: bold;">${t.amount} BFG</td>
+                        <td style="padding: 10px; color: var(--accent-primary); font-weight: bold;">${t.amount} BFG</td>
                         <td style="padding: 10px; opacity: 0.7;">${t.time}</td>
                     </tr>`
                 ).join("");
@@ -252,14 +255,14 @@ async function fetchEcosystemData() {
         if (blockContainer && data.blocks) {
             document.querySelectorAll("[data-blocks]").forEach(el => el.textContent = data.blocks.length);
             blockContainer.innerHTML = data.blocks.map(b =>
-                `<div class="block" style="border: 1px solid #00d2ff; padding: 18px; margin-bottom: 15px; border-radius: 10px; background: rgba(0, 210, 255, 0.03);">
-                    <div class="block-head" style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid rgba(0,210,255,0.2); padding-bottom: 8px;">
-                        <strong style="color: #00d2ff; font-size: 1.1rem;">Block #${b.index}</strong>
-                        <span class="badge" style="background: #27ae60; color: #fff; padding: 4px 10px; border-radius: 4px; font-weight: bold; font-size: 0.8rem;">● Validated</span>
+                `<div class="block card-panel" style="margin-bottom: 15px;">
+                    <div class="block-head" style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border-subtle); padding-bottom: 8px;">
+                        <strong style="font-size: 1.1rem;">Block #${b.index}</strong>
+                        <span class="badge">Validated</span>
                     </div>
                     <div style="font-size: 0.85rem; opacity: 0.8; margin-top: 10px;"><strong>Previous Hash:</strong> <span style="font-family: monospace;">${b.prev}</span></div>
-                    <div style="font-family: monospace; color: #00d2ff; margin: 6px 0; word-break: break-all;"><strong>Current Hash:</strong> ${b.hash}</div>
-                    <div style="margin-top: 6px;"><span>Transactions / Payload: </span><strong style="color: #2ecc71;">${b.data}</strong></div>
+                    <div style="font-family: monospace; color: var(--accent-primary); margin: 6px 0; word-break: break-all;"><strong>Current Hash:</strong> ${b.hash}</div>
+                    <div style="margin-top: 6px;"><span>Transactions / Payload: </span><strong style="color: var(--accent-emerald);">${b.data}</strong></div>
                     <div style="font-size: 0.8rem; opacity: 0.6; margin-top: 8px;">Mined Timestamp: ${b.time}</div>
                 </div>`
             ).join("");
@@ -285,11 +288,19 @@ window.toggleBalanceVisibility = async function() {
 window.executePayment = async function(receiver, amount) {
     if (!receiver || amount <= 0) {
         showMessage("Please enter a valid receiver username and positive amount.", true);
-        return;
+        return false;
     }
     if (receiver.toLowerCase() === currentUser.toLowerCase()) {
         showMessage("You cannot send coins to yourself!", true);
-        return;
+        return false;
+    }
+
+    const confirmed = window.confirm(
+        `Confirm payment\n\nSend ${Number(amount).toFixed(2)} BFG to ${receiver}?`
+    );
+    if (!confirmed) {
+        showMessage("Payment cancelled.");
+        return false;
     }
 
     const payload = `sender=${encodeURIComponent(currentUser)}&receiver=${encodeURIComponent(receiver)}&amount=${amount}`;
@@ -305,8 +316,10 @@ window.executePayment = async function(receiver, amount) {
             showToast(`Successfully sent ${amount} BFG to ${receiver}!`, "success");
         }
         fetchEcosystemData();
+        return data.success;
     } catch (err) {
         showMessage("Transaction failed to process.", true);
+        return false;
     }
 };
 
@@ -316,3 +329,19 @@ window.sendCoins = function(event) {
     const amount = Number(document.getElementById("amount").value);
     window.executePayment(receiver, amount);
 };
+
+// Generate QR Code on Wallet Dashboard Load
+document.addEventListener("DOMContentLoaded", () => {
+    const qrContainer = document.getElementById("qrCodeContainer");
+    if (qrContainer && typeof QRCode !== 'undefined') {
+        qrContainer.innerHTML = ""; // Clear placeholder
+        new QRCode(qrContainer, {
+            text: currentUser, // Encodes the username
+            width: 110,
+            height: 110,
+            colorDark : "#0f172a",
+            colorLight : "#ffffff",
+            correctLevel : QRCode.CorrectLevel.M
+        });
+    }
+});

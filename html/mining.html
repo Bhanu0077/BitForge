@@ -6,10 +6,9 @@
     <title>BitForge - Mining Engine</title>
     <link rel="stylesheet" href="../style.css">
     <style>
-        .mine-card { border: 1px solid #00d2ff; padding: 30px; border-radius: 12px; background: rgba(0, 210, 255, 0.05); text-align: center; max-width: 600px; margin: 30px auto; }
-        .hash-display { font-family: monospace; font-size: 1.1rem; color: #00d2ff; background: #0f172a; padding: 15px; border-radius: 8px; word-break: break-all; margin: 20px 0; border: 1px solid rgba(0,210,255,0.2); }
-        .btn-mine { padding: 15px 35px; background: #27ae60; color: #fff; font-size: 1.2rem; font-weight: bold; border: none; border-radius: 8px; cursor: pointer; transition: all 0.2s; }
-        .btn-mine:hover { background: #2ecc71; transform: scale(1.02); }
+        .hash-display { font-family: var(--font-mono); font-size: .9rem; color: #cbd5e1; background: #0d1422; padding: 15px; border-radius: 7px; word-break: break-all; margin: 20px 0; border: 1px solid var(--border-subtle); }
+        .btn-mine { padding: 12px 18px; font-size: .9rem; }
+        .btn-mine:hover { transform: translateY(-1px); }
         .btn-mine:disabled { background: #7f8c8d; cursor: not-allowed; }
     </style>
 </head>
@@ -17,20 +16,20 @@
     <nav>
         <a href="index.html">Dashboard</a>
         <a href="wallet.html">Wallet</a>
-        <a href="transactions.html">Transactions / Pay</a>
+        <a href="transactions.html">Payments</a>
         <a href="mining.html" class="active">Mining</a>
         <a href="blockchain.html">Ledger</a>
         <a href="network.html">Network</a>
-        <button onclick="logout()" style="background: #e74c3c; padding: 5px 15px; border: none; cursor: pointer;">Logout</button>
+        <button onclick="logout()" style="background: var(--danger-red); padding: 5px 15px; border: none; cursor: pointer;">Logout</button>
     </nav>
 
     <div class="container" style="padding: 20px;">
         <h2 style="text-align: center;">BitForge Proof-of-Work Engine</h2>
 
-        <div class="mine-card">
+        <div class="card-panel">
             <h3>Active Mining Node</h3>
-            <p style="margin-top: 8px;">Miner Identity: <strong data-user style="color: #00d2ff;">Loading...</strong></p>
-            <p style="margin-top: 4px;">Block Reward: <strong style="color: #2ecc71;">+10.00 BFG</strong></p>
+            <p style="margin-top: 8px;">Miner Identity: <strong data-user style="color: var(--accent-primary);">Loading...</strong></p>
+            <p style="margin-top: 4px;">Block Reward: <strong style="color: var(--accent-emerald);">+10.00 BFG</strong></p>
 
             <div style="margin-top: 20px;" id="nonceBox">Current Nonce calculation: <span id="nonceVal">11010</span></div>
 
@@ -38,7 +37,7 @@
                 00003447af942de333d71083107008ea4740124e4f70aa15b03a3c6889388988
             </div>
 
-            <button class="btn-mine" id="mineBtn" onclick="executeProofOfWork()">⚡ Start Mining Block</button>
+            <button class="btn-mine" id="mineBtn" onclick="executeProofOfWork()">Start Mining Block</button>
 
             <div id="message" style="margin-top: 20px; font-weight: bold;"></div>
         </div>
@@ -54,7 +53,7 @@
             const msg = document.getElementById("message");
 
             btn.disabled = true;
-            btn.textContent = "⏳ Calculating Proof-of-Work...";
+            btn.textContent = "Calculating proof-of-work…";
             msg.textContent = "";
 
             let iterations = 0;
@@ -85,18 +84,18 @@
                 if (data.success) {
                     document.getElementById("hashDisplay").textContent = data.hash;
                     document.getElementById("nonceVal").textContent = data.nonce;
-                    showMessage("✅ " + data.message, false);
+                    showMessage("" + data.message, false);
                     if (typeof showToast === "function") {
-                        showToast("⛏️ Block successfully mined! +10.00 BFG added to balance.", "success");
+                        showToast("Block successfully mined! +10.00 BFG added to balance.", "success");
                     }
                 } else {
-                    showMessage("⚠️ " + data.message, true);
+                    showMessage("" + data.message, true);
                 }
             } catch (err) {
-                showMessage("⚠️ Connection to mining server failed.", true);
+                showMessage("Connection to mining server failed.", true);
             } finally {
                 btn.disabled = false;
-                btn.textContent = "⚡ Start Mining Block";
+                btn.textContent = "Start Mining Block";
             }
         }
     </script>

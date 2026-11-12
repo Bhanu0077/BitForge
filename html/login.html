@@ -7,36 +7,36 @@
     <link rel="stylesheet" href="../style.css">
     <style>
         .input-group { position: relative; width: 100%; }
-        .eye-btn { position: absolute; right: 10px; top: 50%; transform: translateY(-50%); background: none; border: none; cursor: pointer; font-size: 1.1rem; color: #94a3b8; }
+        .eye-btn { position: absolute; right: 10px; top: 50%; transform: translateY(-50%); background: none; border: none; cursor: pointer; font-size: 1.1rem; color: var(--text-secondary); }
     </style>
 </head>
-<body style="display: flex; justify-content: center; align-items: center; min-height: 100vh; background: #0f172a;">
-    <div style="background: #1e293b; padding: 30px; border-radius: 12px; border: 1px solid #00d2ff; width: 90%; max-width: 400px; text-align: center;">
-        <h2 style="color: #00d2ff; margin-bottom: 10px;">BitForge Login</h2>
+<body style="display: flex; justify-content: center; align-items: center; min-height: 100vh; background: var(--bg-base);">
+    <div style="background: var(--bg-surface); padding: 30px; border-radius: 12px; border: 1px solid var(--accent-primary); width: 90%; max-width: 400px; text-align: center;">
+        <h2 style="color: var(--accent-primary); margin-bottom: 10px;">BitForge Login</h2>
         <p style="font-size: 0.9rem; opacity: 0.8; margin-bottom: 20px;">Access your blockchain wallet</p>
 
         <form id="loginForm" onsubmit="handleLogin(event)">
             <div style="margin-bottom: 15px; text-align: left;">
-                <label style="font-size: 0.85rem; color: #94a3b8;">Username</label>
-                <input type="text" id="loginUsername" required placeholder="e.g. bhanu" style="width: 100%; padding: 12px; border-radius: 6px; border: 1px solid #334155; background: #0f172a; color: #fff; margin-top: 5px;">
+                <label style="font-size: 0.85rem; color: var(--text-secondary);">Username</label>
+                <input type="text" id="loginUsername" required placeholder="e.g. john" style="width: 100%; padding: 12px; border-radius: 6px; border: 1px solid var(--border-subtle); background: var(--bg-base); color: var(--text-primary); margin-top: 5px;">
             </div>
 
             <div style="margin-bottom: 20px; text-align: left;">
-                <label style="font-size: 0.85rem; color: #94a3b8;">Password</label>
+                <label style="font-size: 0.85rem; color: var(--text-secondary);">Password</label>
                 <div class="input-group">
-                    <input type="password" id="loginPassword" required placeholder="••••••••" style="width: 100%; padding: 12px 40px 12px 12px; border-radius: 6px; border: 1px solid #334155; background: #0f172a; color: #fff; margin-top: 5px;">
-                    <button type="button" class="eye-btn" onclick="togglePasswordVisibility('loginPassword', this)">👁️</button>
+                    <input type="password" id="loginPassword" required placeholder="••••••••" style="width: 100%; padding: 12px 40px 12px 12px; border-radius: 6px; border: 1px solid var(--border-subtle); background: var(--bg-base); color: var(--text-primary); margin-top: 5px;">
+                    <button type="button" class="eye-btn" aria-label="Show password" title="Show password" onclick="togglePasswordVisibility('loginPassword', this)"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M2 12s3.5-6 10-6 10 6 10 6-3.5 6-10 6S2 12 2 12Z"/><circle cx="12" cy="12" r="2.5"/></svg></button>
                 </div>
             </div>
 
-            <button type="submit" style="width: 100%; padding: 12px; background: #00d2ff; color: #000; font-weight: bold; border: none; border-radius: 6px; cursor: pointer; font-size: 1rem;">Login to Wallet</button>
+            <button type="submit" style="width: 100%; padding: 12px; background: var(--accent-primary); color: #ffffff; font-weight: bold; border: none; border-radius: 6px; cursor: pointer; font-size: 1rem;">Login to Wallet</button>
         </form>
 
         <div id="authMessage" style="margin-top: 15px; font-size: 0.9rem; font-weight: bold;"></div>
 
         <div style="margin-top: 20px; font-size: 0.85rem;">
-            <a href="signup.html" style="color: #00d2ff; text-decoration: none;">Create New Account</a> | 
-            <a href="forgot-password.html" style="color: #94a3b8; text-decoration: none;">Forgot Password?</a>
+            <a href="signup.html" style="color: var(--accent-primary); text-decoration: none;">Create New Account</a> |
+            <a href="forgot-password.html" style="color: var(--text-secondary); text-decoration: none;">Forgot Password?</a>
         </div>
     </div>
 

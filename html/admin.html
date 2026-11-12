@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BitForge — Administration</title>
+    <link rel="stylesheet" href="../style.css">
+</head>
+<body>
+    <nav>
+        <a href="admin.html" class="active">Administration</a>
+        <a href="index.html">Wallet dashboard</a>
+        <button id="adminLogout">Sign out</button>
+    </nav>
+    <main class="container">
+        <p class="eyebrow">Restricted / live database console</p>
+        <h2>Everything happening in BitForge</h2>
+        <p>Inspect the live MySQL records and make controlled changes. Blockchain rows are shown for audit; editing them is intentionally disabled to protect chain integrity.</p>
+
+        <section class="grid-3">
+            <article class="card-panel"><p class="eyebrow">Wallet accounts</p><div class="metric" id="userCount">—</div></article>
+            <article class="card-panel"><p class="eyebrow">Transactions</p><div class="metric" id="transactionCount">—</div></article>
+            <article class="card-panel"><p class="eyebrow">Ledger blocks</p><div class="metric" id="blockCount">—</div></article>
+        </section>
+
+        <section class="grid-2">
+            <article class="card-panel">
+                <p class="eyebrow">Create user</p><h3 style="margin-top:8px">New wallet account</h3>
+                <form id="createUserForm" style="margin-top:18px">
+                    <label for="newUsername">Username</label><input id="newUsername" pattern="[a-zA-Z0-9_.-]{3,64}" required>
+                    <label for="newPassword">Temporary password</label><input id="newPassword" type="password" minlength="6" required>
+                    <label for="newBalance">Opening balance (BFG)</label><input id="newBalance" type="number" min="0" step="0.01" value="100.00" required>
+                    <button type="submit">Create user</button>
+                </form>
+                <p id="createUserMessage" role="status" style="margin-top:12px"></p>
+            </article>
+            <article class="card-panel">
+                <p class="eyebrow">Live activity</p><h3 style="margin-top:8px">Admin session log</h3>
+                <p class="muted" style="margin-top:12px">This records database reads and changes made during this session.</p>
+                <ol id="activityLog" class="activity-log" aria-live="polite"><li>Console opened.</li></ol>
+                <button class="secondary" id="refreshAdmin" style="margin-top:18px">Refresh all data</button>
+            </article>
+        </section>
+
+        <div class="section-heading"><div><p class="eyebrow">MySQL / users</p><h3>Wallet accounts</h3></div><span class="muted">Edit balance, username, and privacy</span></div>
+        <div class="table-wrapper"><table><thead><tr><th>ID</th><th>Username</th><th>Balance</th><th>Visibility</th><th>Actions</th></tr></thead><tbody id="usersBody"><tr><td colspan="5" style="text-align:center">Loading users…</td></tr></tbody></table></div>
+
+        <div class="section-heading"><div><p class="eyebrow">MySQL / transactions</p><h3>Transaction records</h3></div><span class="muted">Changes do not recalculate wallet balances</span></div>
+        <div class="table-wrapper"><table><thead><tr><th>ID</th><th>Sender</th><th>Receiver</th><th>Amount</th><th>Timestamp</th><th>Actions</th></tr></thead><tbody id="transactionsBody"><tr><td colspan="6" style="text-align:center">Loading transactions…</td></tr></tbody></table></div>
+
+        <div class="section-heading"><div><p class="eyebrow">MySQL / blockchain</p><h3>Ledger records</h3></div><span class="muted">Read-only integrity view</span></div>
+        <div class="table-wrapper"><table><thead><tr><th>Block</th><th>Hash</th><th>Previous hash</th><th>Nonce</th><th>Timestamp</th><th>Payload</th></tr></thead><tbody id="blocksBody"><tr><td colspan="6" style="text-align:center">Loading blocks…</td></tr></tbody></table></div>
+    </main>
+    <script>
+        const api = window.location.origin + "/BitForge/api/admin";
+        const $ = id => document.getElementById(id);
+        const escapeHtml = value => String(value ?? "").replace(/[&<>"']/g, char => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#039;" })[char]);
+        const log = message => {
+            const item = document.createElement("li");
+            item.textContent = `${new Date().toLocaleTimeString()} — ${message}`;
+            $("activityLog").prepend(item);
+        };
+        const request = async path => {
+            const response = await fetch(api + path);
+            const data = await response.json();
+            if (!data.success && data.message === "Administrator authentication required.") window.location.href = "admin-login.html";
+            return data;
+        };
+        const change = async (path, values) => {
+            const response = await fetch(api + path, { method: "POST", headers: { "Content-Type": "application/x-www-form-urlencoded" }, body: new URLSearchParams(values) });
+            const data = await response.json();
+            if (data.success) log(data.message || "Database updated.");
+            else window.alert(data.message || "Database change failed.");
+            return data;
+        };
+        async function refreshAdmin() {
+            try {
+                const [overview, users, transactions, blocks] = await Promise.all([request("/overview"), request("/users"), request("/transactions"), request("/blocks")]);
+                if (overview.success) {
+                    $("userCount").textContent = overview.users;
+                    $("transactionCount").textContent = overview.transactions;
+                    $("blockCount").textContent = overview.blocks;
+                }
+                if (users.success) $("usersBody").innerHTML = users.users.length ? users.users.map(user =>
+                    `<tr><td class="mono-text">${user.id}</td><td>${escapeHtml(user.username)}</td><td class="text-success">${Number(user.balance).toFixed(2)} BFG</td><td>${user.is_private ? "Private" : "Public"}</td><td><button class="secondary" onclick="editUser(${user.id}, '${encodeURIComponent(user.username)}', ${Number(user.balance)}, ${user.is_private})">Edit</button> <button class="danger" onclick="removeUser('${encodeURIComponent(user.username)}')">Remove</button></td></tr>`
+                ).join("") : '<tr><td colspan="5" style="text-align:center">No users found.</td></tr>';
+                if (transactions.success) $("transactionsBody").innerHTML = transactions.transactions.length ? transactions.transactions.map(transaction =>
+                    `<tr><td class="mono-text">${transaction.id}</td><td>${escapeHtml(transaction.sender)}</td><td>${escapeHtml(transaction.receiver)}</td><td class="mono-text">${Number(transaction.amount).toFixed(2)} BFG</td><td class="mono-text">${escapeHtml(transaction.timestamp)}</td><td><button class="secondary" onclick="editTransaction(${transaction.id}, '${encodeURIComponent(transaction.sender)}', '${encodeURIComponent(transaction.receiver)}', ${Number(transaction.amount)})">Edit</button> <button class="danger" onclick="removeTransaction(${transaction.id})">Remove</button></td></tr>`
+                ).join("") : '<tr><td colspan="6" style="text-align:center">No transactions found.</td></tr>';
+                if (blocks.success) $("blocksBody").innerHTML = blocks.blocks.length ? blocks.blocks.map(block =>
+                    `<tr><td class="mono-text">${block.index}</td><td class="mono-text">${escapeHtml(block.currentHash)}</td><td class="mono-text">${escapeHtml(block.previousHash)}</td><td class="mono-text">${block.nonce}</td><td class="mono-text">${escapeHtml(block.timestamp)}</td><td>${escapeHtml(block.data)}</td></tr>`
+                ).join("") : '<tr><td colspan="6" style="text-align:center">No blocks found.</td></tr>';
+                log("Live database snapshot refreshed.");
+            } catch (_) {
+                window.alert("Could not read the live database.");
+            }
+        }
+        window.editUser = async (id, encodedUsername, currentBalance, currentPrivate) => {
+            const currentUsername = decodeURIComponent(encodedUsername);
+            const username = window.prompt("Username", currentUsername);
+            if (username === null) return;
+            const balance = window.prompt("Balance (BFG)", currentBalance.toFixed(2));
+            if (balance === null) return;
+            const visibility = window.confirm("Keep this account private? OK = private, Cancel = public");
+            if (await change("/users/update", { id, username: username.trim(), balance, is_private: visibility ? "1" : "0" })) refreshAdmin();
+        };
+        window.editTransaction = async (id, encodedSender, encodedReceiver, amount) => {
+            const sender = decodeURIComponent(encodedSender);
+            const receiver = decodeURIComponent(encodedReceiver);
+            const nextSender = window.prompt("Sender username", sender);
+            if (nextSender === null) return;
+            const nextReceiver = window.prompt("Receiver username", receiver);
+            if (nextReceiver === null) return;
+            const nextAmount = window.prompt("Amount (BFG)", amount.toFixed(2));
+            if (nextAmount === null) return;
+            if (await change("/transactions/update", { id, sender: nextSender.trim(), receiver: nextReceiver.trim(), amount: nextAmount })) refreshAdmin();
+        };
+        window.removeUser = async encodedUsername => {
+            const username = decodeURIComponent(encodedUsername);
+            if (!window.confirm(`Remove ${username} and every transaction involving this user? This cannot be undone.`)) return;
+            if (await change("/users/delete", { username })) refreshAdmin();
+        };
+        window.removeTransaction = async id => {
+            if (!window.confirm("Remove this transaction record? Wallet balances will not change.")) return;
+            if (await change("/transactions/delete", { id })) refreshAdmin();
+        };
+        $("createUserForm").addEventListener("submit", async event => {
+            event.preventDefault();
+            const data = await change("/users", { username: $("newUsername").value.trim(), password: $("newPassword").value, balance: $("newBalance").value });
+            const message = $("createUserMessage");
+            message.textContent = data.message || "";
+            message.className = data.success ? "text-success" : "text-danger";
+            if (data.success) { event.target.reset(); $("newBalance").value = "100.00"; refreshAdmin(); }
+        });
+        $("refreshAdmin").addEventListener("click", refreshAdmin);
+        $("adminLogout").addEventListener("click", async () => { await fetch(api + "/logout", { method: "POST" }); window.location.href = "admin-login.html"; });
+        refreshAdmin();
+    </script>
+</body>
+</html>

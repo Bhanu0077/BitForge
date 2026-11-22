@@ -1,13 +1,20 @@
 {
-  "name": "BitForge Wallet",
+  "name": "BitForge",
   "short_name": "BitForge",
-  "start_url": "../html/index.html",
+  "description": "Bitcoin-inspired wallet, mining, and blockchain ledger",
+  "start_url": "./html/index.html",
+  "scope": "./",
   "display": "standalone",
   "background_color": "#0f172a",
   "theme_color": "#00d2ff",
   "icons": [
     {
-      "src": "https://cdn-icons-png.flaticon.com/512/2091/2091665.png",
+      "src": "./android-chrome-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "./android-chrome-512x512.png",
       "sizes": "512x512",
       "type": "image/png"
     }

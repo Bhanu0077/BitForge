@@ -24,7 +24,7 @@ public class DatabaseManager {
                     "password_hash VARCHAR(255) NOT NULL, " +
                     "secret_question VARCHAR(255) NOT NULL, " +
                     "secret_answer VARCHAR(255) NOT NULL, " +
-                    "balance DOUBLE DEFAULT 100.0, " +
+                    "balance DOUBLE DEFAULT 0.0, " +
                     "is_private TINYINT DEFAULT 0" +
                     ")");
 
@@ -37,18 +37,27 @@ public class DatabaseManager {
                 stmt.execute("ALTER TABLE users ADD COLUMN is_private TINYINT DEFAULT 0");
             } catch (Exception ignored) {}
 
+            try {
+                stmt.execute("ALTER TABLE users ALTER COLUMN balance SET DEFAULT 0.0");
+            } catch (Exception ignored) {}
+
             // Recreate transactions table with sender_username & receiver_username
             stmt.execute("CREATE TABLE IF NOT EXISTS transactions (" +
                     "id INT AUTO_INCREMENT PRIMARY KEY, " +
                     "sender_username VARCHAR(255) NOT NULL, " +
                     "receiver_username VARCHAR(255) NOT NULL, " +
                     "amount DOUBLE NOT NULL, " +
-                    "timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP" +
+                    "timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP, " +
+                    "block_index INT DEFAULT 0" +
                     ")");
 
             try {
                 stmt.execute("ALTER TABLE transactions CHANGE COLUMN sender_email sender_username VARCHAR(255) NOT NULL");
                 stmt.execute("ALTER TABLE transactions CHANGE COLUMN receiver_email receiver_username VARCHAR(255) NOT NULL");
+            } catch (Exception ignored) {}
+
+            try {
+                stmt.execute("ALTER TABLE transactions ADD COLUMN block_index INT DEFAULT 0");
             } catch (Exception ignored) {}
 
             // Recreate blockchain table
@@ -60,6 +69,8 @@ public class DatabaseManager {
                     "timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP, " +
                     "transactions_data TEXT NOT NULL" +
                     ")");
+
+            stmt.execute("UPDATE transactions t JOIN blockchain b ON b.block_index = (SELECT MAX(block_index) FROM blockchain) SET t.block_index = b.block_index WHERE t.block_index = 0");
 
         } catch (Exception e) {
             e.printStackTrace();

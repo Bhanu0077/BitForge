@@ -21,10 +21,6 @@ public class MiningServlet extends HttpServlet {
         String username = req.getParameter("username");
         if (username == null || username.trim().isEmpty()) username = req.getParameter("miner");
         if (username == null || username.trim().isEmpty()) username = req.getParameter("email");
-        double reward = 10.0;
-        try {
-            if (req.getParameter("reward") != null) reward = Double.parseDouble(req.getParameter("reward"));
-        } catch (Exception ignored) {}
 
         if (username == null || username.trim().isEmpty()) {
             out.print("{\"success\": false, \"message\": \"Miner username required.\"}");
@@ -33,15 +29,6 @@ public class MiningServlet extends HttpServlet {
 
         try (Connection conn = DatabaseManager.getConnection()) {
             conn.setAutoCommit(false);
-            PreparedStatement updateBal = conn.prepareStatement("UPDATE users SET balance = balance + ? WHERE LOWER(username) = LOWER(?)");
-            updateBal.setDouble(1, reward);
-            updateBal.setString(2, username.trim());
-            int rowsUpdated = updateBal.executeUpdate();
-            if (rowsUpdated == 0) {
-                conn.rollback();
-                out.print("{\"success\": false, \"message\": \"Miner user account not found.\"}");
-                return;
-            }
 
             int lastIndex = 1;
             String prevHash = "00000000000000000000000000000000";
@@ -50,6 +37,20 @@ public class MiningServlet extends HttpServlet {
             if (rsBlock.next()) {
                 lastIndex = rsBlock.getInt("block_index") + 1;
                 prevHash = rsBlock.getString("current_hash");
+            }
+
+            int minedBlocksAfterGenesis = Math.max(0, lastIndex - 2);
+            int rewardEra = minedBlocksAfterGenesis / 210;
+            double reward = 50.0 / Math.pow(2.0, rewardEra);
+
+            PreparedStatement updateBal = conn.prepareStatement("UPDATE users SET balance = balance + ? WHERE LOWER(username) = LOWER(?)");
+            updateBal.setDouble(1, reward);
+            updateBal.setString(2, username.trim());
+            int rowsUpdated = updateBal.executeUpdate();
+            if (rowsUpdated == 0) {
+                conn.rollback();
+                out.print("{\"success\": false, \"message\": \"Miner user account not found.\"}");
+                return;
             }
 
             int nonce = (int) (Math.random() * 90000) + 10000;
@@ -67,7 +68,7 @@ public class MiningServlet extends HttpServlet {
             addBlock.executeUpdate();
 
             conn.commit();
-            out.print("{\"success\": true, \"message\": \"Block #" + lastIndex + " successfully mined! Reward of " + reward + " BFG credited.\", \"hash\": \"" + currentHash + "\", \"nonce\": " + nonce + "}");
+            out.print("{\"success\": true, \"message\": \"Block #" + lastIndex + " successfully mined! Reward of " + reward + " BFG credited.\", \"hash\": \"" + currentHash + "\", \"nonce\": " + nonce + ", \"reward\":" + reward + ", \"block_index\":" + lastIndex + "}");
 
         } catch (Exception e) {
             e.printStackTrace();

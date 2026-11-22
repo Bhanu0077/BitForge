@@ -34,7 +34,7 @@ public class AuthServlet extends HttpServlet {
 
             try (Connection conn = DatabaseManager.getConnection()) {
                 PreparedStatement pstmt = conn.prepareStatement(
-                    "INSERT INTO users (username, password_hash, secret_question, secret_answer, balance) VALUES (?, ?, ?, ?, 100.0)"
+                    "INSERT INTO users (username, password_hash, secret_question, secret_answer, balance) VALUES (?, ?, ?, ?, 0.0)"
                 );
                 pstmt.setString(1, username.trim().toLowerCase());
                 pstmt.setString(2, password);

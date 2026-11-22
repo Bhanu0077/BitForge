@@ -99,14 +99,21 @@ public class TransactionServlet extends HttpServlet {
             add.setString(2, receiver.trim());
             add.executeUpdate();
 
-            PreparedStatement logTx = conn.prepareStatement("INSERT INTO transactions (sender_username, receiver_username, amount) VALUES (?, ?, ?)");
+            int latestBlockIndex = 1;
+            try (PreparedStatement latestBlock = conn.prepareStatement("SELECT block_index FROM blockchain ORDER BY block_index DESC LIMIT 1");
+                 ResultSet latestBlockRs = latestBlock.executeQuery()) {
+                if (latestBlockRs.next()) latestBlockIndex = latestBlockRs.getInt("block_index");
+            }
+
+            PreparedStatement logTx = conn.prepareStatement("INSERT INTO transactions (sender_username, receiver_username, amount, block_index) VALUES (?, ?, ?, ?)");
             logTx.setString(1, sender.trim());
             logTx.setString(2, receiver.trim());
             logTx.setDouble(3, amount);
+            logTx.setInt(4, latestBlockIndex);
             logTx.executeUpdate();
 
             conn.commit();
-            out.print("{\"success\": true, \"message\": \"Transfer successful!\"}");
+            out.print("{\"success\": true, \"message\": \"Transfer successful!\", \"block_index\":" + latestBlockIndex + "}");
 
         } catch (Exception e) {
             out.print("{\"success\": false, \"message\": \"Transaction error\"}");

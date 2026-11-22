@@ -200,7 +200,7 @@ public class AdminServlet extends HttpServlet {
             stmt.setString(2, password);
             stmt.setString(3, "admin-created");
             stmt.setString(4, "not-applicable");
-            stmt.setDouble(5, balance);
+            stmt.setDouble(5, 0.0);
             stmt.executeUpdate();
             success(out, "User created.");
         } catch (Exception e) {

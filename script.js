@@ -61,7 +61,10 @@ document.addEventListener("DOMContentLoaded", () => {
     }
     
     fetchEcosystemData();
-    setInterval(fetchEcosystemData, 2000);
+
+    window.addEventListener("storage", event => {
+        if (event.key === "bitforgeLedgerUpdate") fetchEcosystemData();
+    });
 });
 
 function logout() {
@@ -147,7 +150,7 @@ window.handleSignup = async function(event) {
         const data = await res.json();
         
         if (data.success) {
-            showMessage("Account created! Wallet initialized with 100 BFG. Redirecting to login...");
+            showMessage("Account created! Redirecting to login...");
             setTimeout(() => window.location.href = "login.html", 1200);
         } else {
             showMessage(data.message, true);
@@ -251,21 +254,28 @@ async function fetchEcosystemData() {
             }
         }
 
-        const blockContainer = document.getElementById("blocks");
-        if (blockContainer && data.blocks) {
-            document.querySelectorAll("[data-blocks]").forEach(el => el.textContent = data.blocks.length);
-            blockContainer.innerHTML = data.blocks.map(b =>
-                `<div class="block card-panel" style="margin-bottom: 15px;">
-                    <div class="block-head" style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border-subtle); padding-bottom: 8px;">
-                        <strong style="font-size: 1.1rem;">Block #${b.index}</strong>
-                        <span class="badge">Validated</span>
-                    </div>
-                    <div style="font-size: 0.85rem; opacity: 0.8; margin-top: 10px;"><strong>Previous Hash:</strong> <span style="font-family: monospace;">${b.prev}</span></div>
-                    <div style="font-family: monospace; color: var(--accent-primary); margin: 6px 0; word-break: break-all;"><strong>Current Hash:</strong> ${b.hash}</div>
-                    <div style="margin-top: 6px;"><span>Transactions / Payload: </span><strong style="color: var(--accent-emerald);">${b.data}</strong></div>
-                    <div style="font-size: 0.8rem; opacity: 0.6; margin-top: 8px;">Mined Timestamp: ${b.time}</div>
-                </div>`
-            ).join("");
+        const blockRes = await fetch(`${API_URL}/blockchain`);
+        const blockData = await blockRes.json();
+        if (blockData.success && Array.isArray(blockData.blocks)) {
+            document.querySelectorAll("[data-blocks]").forEach(el => {
+                el.textContent = blockData.blocks.length;
+            });
+
+            const blockContainer = document.getElementById("blocks");
+            if (blockContainer) {
+                blockContainer.innerHTML = blockData.blocks.map(b =>
+                    `<div class="block card-panel" style="margin-bottom: 15px;">
+                        <div class="block-head" style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border-subtle); padding-bottom: 8px;">
+                            <strong style="font-size: 1.1rem;">Block #${b.index}</strong>
+                            <span class="badge">Validated</span>
+                        </div>
+                        <div style="font-size: 0.85rem; opacity: 0.8; margin-top: 10px;"><strong>Previous Hash:</strong> <span style="font-family: monospace;">${b.prev}</span></div>
+                        <div style="font-family: monospace; color: var(--accent-primary); margin: 6px 0; word-break: break-all;"><strong>Current Hash:</strong> ${b.hash}</div>
+                        <div style="margin-top: 6px;"><span>Transactions / Payload: </span><strong style="color: var(--accent-emerald);">${b.data}</strong></div>
+                        <div style="font-size: 0.8rem; opacity: 0.6; margin-top: 8px;">Mined Timestamp: ${b.time}</div>
+                    </div>`
+                ).join("");
+            }
         }
     } catch (err) {}
 }
@@ -314,6 +324,13 @@ window.executePayment = async function(receiver, amount) {
         showMessage(data.message, !data.success);
         if (data.success) {
             showToast(`Successfully sent ${amount} BFG to ${receiver}!`, "success");
+            localStorage.setItem("bitforgeLedgerUpdate", JSON.stringify({
+                blockIndex: data.block_index,
+                from: currentUser,
+                to: receiver,
+                amount,
+                timestamp: new Date().toISOString()
+            }));
         }
         fetchEcosystemData();
         return data.success;

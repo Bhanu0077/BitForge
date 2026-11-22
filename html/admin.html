@@ -29,7 +29,7 @@
                 <form id="createUserForm" style="margin-top:18px">
                     <label for="newUsername">Username</label><input id="newUsername" pattern="[a-zA-Z0-9_.-]{3,64}" required>
                     <label for="newPassword">Temporary password</label><input id="newPassword" type="password" minlength="6" required>
-                    <label for="newBalance">Opening balance (BFG)</label><input id="newBalance" type="number" min="0" step="0.01" value="100.00" required>
+                    <label for="newBalance">Opening balance (BFG)</label><input id="newBalance" type="number" min="0" step="0.01" value="0.00" required>
                     <button type="submit">Create user</button>
                 </form>
                 <p id="createUserMessage" role="status" style="margin-top:12px"></p>
@@ -52,7 +52,8 @@
         <div class="table-wrapper"><table><thead><tr><th>Block</th><th>Hash</th><th>Previous hash</th><th>Nonce</th><th>Timestamp</th><th>Payload</th></tr></thead><tbody id="blocksBody"><tr><td colspan="6" style="text-align:center">Loading blocks…</td></tr></tbody></table></div>
     </main>
     <script>
-        const api = window.location.origin + "/BitForge/api/admin";
+        const contextPath = window.location.pathname.split("/html/")[0];
+        const api = window.location.origin + contextPath + "/api/admin";
         const $ = id => document.getElementById(id);
         const escapeHtml = value => String(value ?? "").replace(/[&<>"']/g, char => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#039;" })[char]);
         const log = message => {
@@ -130,7 +131,7 @@
             const message = $("createUserMessage");
             message.textContent = data.message || "";
             message.className = data.success ? "text-success" : "text-danger";
-            if (data.success) { event.target.reset(); $("newBalance").value = "100.00"; refreshAdmin(); }
+            if (data.success) { event.target.reset(); $("newBalance").value = "0.00"; refreshAdmin(); }
         });
         $("refreshAdmin").addEventListener("click", refreshAdmin);
         $("adminLogout").addEventListener("click", async () => { await fetch(api + "/logout", { method: "POST" }); window.location.href = "admin-login.html"; });

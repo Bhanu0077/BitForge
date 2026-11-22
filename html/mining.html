@@ -29,7 +29,7 @@
         <div class="card-panel">
             <h3>Active Mining Node</h3>
             <p style="margin-top: 8px;">Miner Identity: <strong data-user style="color: var(--accent-primary);">Loading...</strong></p>
-            <p style="margin-top: 4px;">Block Reward: <strong style="color: var(--accent-emerald);">+10.00 BFG</strong></p>
+            <p style="margin-top: 4px;">Block Reward: <strong id="blockReward" style="color: var(--accent-emerald);">+50.00 BFG</strong></p>
 
             <div style="margin-top: 20px;" id="nonceBox">Current Nonce calculation: <span id="nonceVal">11010</span></div>
 
@@ -56,28 +56,41 @@
             btn.textContent = "Calculating proof-of-work…";
             msg.textContent = "";
 
-            let iterations = 0;
+            const cores = navigator.hardwareConcurrency || 2;
+            const memory = navigator.deviceMemory || 4;
+            let gpuAvailable = false;
+            try {
+                const canvas = document.createElement("canvas");
+                gpuAvailable = !!(window.WebGLRenderingContext && (canvas.getContext("webgl") || canvas.getContext("experimental-webgl")));
+            } catch (ignored) {}
+
+            let miningMs = 18000 - Math.min(8000, (cores - 2) * 650) - Math.min(3000, (memory - 4) * 350);
+            if (gpuAvailable) miningMs -= 2500;
+            miningMs = Math.round(miningMs * (0.78 + Math.random() * 0.44));
+            miningMs = Math.max(5000, miningMs);
+
+            let elapsed = 0;
             const interval = setInterval(() => {
                 const randomNonce = Math.floor(Math.random() * 90000) + 10000;
                 const fakeHash = "0000" + Array.from({length: 60}, () => Math.floor(Math.random()*16).toString(16)).join("");
                 nonceBox.textContent = randomNonce;
                 hashBox.textContent = fakeHash;
-                iterations++;
+                elapsed += 100;
 
-                if (iterations >= 15) {
+                if (elapsed >= miningMs) {
                     clearInterval(interval);
-                    submitMinedBlock(user);
+                    submitMinedBlock(user, cores, memory, gpuAvailable);
                 }
             }, 100);
         }
 
-        async function submitMinedBlock(user) {
+        async function submitMinedBlock(user, cores, memory, gpuAvailable) {
             const btn = document.getElementById("mineBtn");
             try {
                 const res = await fetch("/BitForge/api/mining", {
                     method: "POST",
                     headers: { "Content-Type": "application/x-www-form-urlencoded" },
-                    body: `username=${encodeURIComponent(user)}&reward=10.0`
+                    body: `username=${encodeURIComponent(user)}&hardwareConcurrency=${encodeURIComponent(cores)}&deviceMemory=${encodeURIComponent(memory)}&gpuAvailable=${gpuAvailable}`
                 });
                 const data = await res.json();
 
@@ -86,7 +99,11 @@
                     document.getElementById("nonceVal").textContent = data.nonce;
                     showMessage("" + data.message, false);
                     if (typeof showToast === "function") {
-                        showToast("Block successfully mined! +10.00 BFG added to balance.", "success");
+                        const reward = data.reward != null ? data.reward : 50;
+                    document.getElementById("blockReward").textContent = `+${Number(reward).toFixed(2)} BFG`;
+                    showToast(`Block successfully mined! +${Number(reward).toFixed(2)} BFG added to balance.`, "success");
+                    localStorage.setItem("bitforgeLedgerUpdate", JSON.stringify({ blockIndex: data.block_index || null, mined: true }));
+                    if (typeof fetchEcosystemData === "function") fetchEcosystemData();
                     }
                 } else {
                     showMessage("" + data.message, true);

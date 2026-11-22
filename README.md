@@ -33,6 +33,8 @@ credentials.
 ```bash
 export BITFORGE_ADMIN_USERNAME=admin
 export BITFORGE_ADMIN_PASSWORD='use-a-long-unique-password'
+
+The Tomcat `bin/setenv.sh` file can also set these variables persistently.
 ```
 
 Restart Tomcat after changing the credentials.

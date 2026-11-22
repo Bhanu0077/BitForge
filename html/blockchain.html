@@ -48,6 +48,12 @@
                                 <div style="font-family: monospace; color: var(--accent-primary); margin: 8px 0; word-break: break-all;"><strong>Current Block Hash:</strong> ${b.hash}</div>
                                 <div style="margin-top: 8px;"><span>Payload / Transaction Data: </span><strong style="color: var(--accent-emerald);">${b.data}</strong></div>
                                 <div style="font-size: 0.8rem; opacity: 0.6; margin-top: 10px;">Nonce: ${b.nonce} | Timestamp: ${b.time}</div>
+                                <details style="margin-top: 12px;">
+                                    <summary style="cursor: pointer; color: var(--accent-primary);">Inspect transactions (${b.transactions ? b.transactions.length : 0})</summary>
+                                    <div style="margin-top: 10px;">
+                                        ${b.transactions && b.transactions.length ? b.transactions.map(t => `<div style="padding: 8px 0; border-top: 1px solid var(--border-subtle);"><strong>${t.from}</strong> → <strong>${t.to}</strong> <span style="color: var(--accent-emerald);">${t.amount} BFG</span><div style="font-size: 0.75rem; opacity: 0.6;">${t.time}</div></div>`).join("") : '<div style="padding: 8px 0; opacity: 0.7;">No transactions in this block.</div>'}
+                                    </div>
+                                </details>
                             </div>
                         `).join("");
                     }
@@ -57,7 +63,10 @@
 
         document.addEventListener("DOMContentLoaded", () => {
             fetchBlockchainData();
-            setInterval(fetchBlockchainData, 3000);
+        });
+
+        window.addEventListener("storage", event => {
+            if (event.key === "bitforgeLedgerUpdate") fetchBlockchainData();
         });
     </script>
 </body>
